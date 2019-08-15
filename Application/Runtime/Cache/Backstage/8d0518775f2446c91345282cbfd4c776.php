@@ -13,10 +13,7 @@
     </style>
     <script type="text/javascript" src="/Public/Backstage/js/transport.js"></script>
     <script type="text/javascript">
-    // onload = function()
-    // {
-    //   Ajax.call('index.php?is_ajax=1&act=license','', start_sendmail_Response, 'GET', 'JSON');
-    // }
+
     /**
      * 帮助系统调用
      */
@@ -28,30 +25,6 @@
         var arr = ne_list.split('-');
         window.open('help.php?al='+arr[arr.length - 1],'_blank');
     }
-
-
-    /**
-     * 授权检测回调处理
-     */
-// function start_sendmail_Response(result)
-// {
-//   // 运行正常
-//   if (result.error == 0)
-//   {
-//     var str = '';
-// 		if (result['content']['auth_str'])
-// 		{
-// 			str = '<a href="javascript:void(0);" target="_blank">' + result['content']['auth_str'];
-// 			if (result['content']['auth_type'])
-// 			{
-// 				str += '[' + result['content']['auth_type'] + ']';
-// 			}
-// 			str += '</a> ';
-// 		}
-
-//     document.getElementById('license-div').innerHTML = str;
-//   }
-// }
 
     function modalDialog(url, name, width, height)
     {
@@ -88,7 +61,6 @@
         {
         }
     }
-
 
     var adminId = "1";
 </script>

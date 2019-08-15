@@ -47,13 +47,13 @@
                     </div>
                 </li>
 
-                <li key="08_members" class="icon-members" data-url="users.php?act=list" data-key="03_users_list" name="menu" onclick="showsub(this)">
-                    会员管理
+                <li key="08_members" class="icon-members" data-url="<?php echo U('User/index');?>" data-key="03_users_list" name="menu" onclick="showsub(this)">
+                    用户管理
                     <div class="submenu">
-                        <div class="title">会员管理</div>
+                        <div class="title">用户管理</div>
                         <ul>
-                            <li id="sub-menu-03_users_list" class="menu-item" onclick="showact(this, event)"><a href="users.php?act=list" target="main-frame">会员列表</a></li>
-                            <li id="sub-menu-04_users_add" class="menu-item" onclick="showact(this, event)"><a href="users.php?act=add" target="main-frame">添加会员</a></li>
+                            <li id="sub-menu-03_users_list" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('User/index');?>" target="main-frame">用户列表</a></li>
+                            <li id="sub-menu-04_users_add" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('User/add');?>" target="main-frame">添加会员</a></li>
                             <li id="sub-menu-05_user_rank_list" class="menu-item" onclick="showact(this, event)"><a href="user_rank.php?act=list" target="main-frame">会员等级</a></li>
                             <li id="sub-menu-06_list_integrate" class="menu-item" onclick="showact(this, event)"><a href="integrate.php?act=list" target="main-frame">会员整合</a></li>
                             <li id="sub-menu-08_unreply_msg" class="menu-item" onclick="showact(this, event)"><a href="user_msg.php?act=list_all" target="main-frame">会员留言</a></li>
@@ -63,16 +63,15 @@
                     </div>
                 </li>
 
-                <li key="10_priv_admin" class="icon-priv" data-url="privilege.php?act=list" data-key="admin_list" name="menu" onclick="showsub(this)">
+                <li key="10_priv_admin" class="icon-priv" data-url="<?php echo U('Access/index');?>" data-key="admin_list" name="menu" onclick="showsub(this)">
                     权限管理
                     <div class="submenu">
                         <div class="title">权限管理</div>
                         <ul>
-                            <li id="sub-menu-admin_list" class="menu-item" onclick="showact(this, event)"><a href="privilege.php?act=list" target="main-frame">管理员列表</a></li>
-                            <li id="sub-menu-admin_logs" class="menu-item" onclick="showact(this, event)"><a href="admin_logs.php?act=list" target="main-frame">管理员日志</a></li>
-                            <li id="sub-menu-admin_role" class="menu-item" onclick="showact(this, event)"><a href="role.php?act=list" target="main-frame">角色管理</a></li>
-                            <li id="sub-menu-agency_list" class="menu-item" onclick="showact(this, event)"><a href="agency.php?act=list" target="main-frame">办事处列表</a></li>
-                            <li id="sub-menu-suppliers_list" class="menu-item" onclick="showact(this, event)"><a href="suppliers.php?act=list" target="main-frame">供货商列表</a></li>
+                            <li id="sub-menu-admin_list" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('Access/index');?>" target="main-frame">权限列表</a></li>
+                            <li id="sub-menu-admin_logs" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('Access/add');?>" target="main-frame">添加权限</a></li>
+                            <li id="sub-menu-admin_role" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('Role/index');?>" target="main-frame">角色管理</a></li>
+                            <li id="sub-menu-agency_list" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('Role/add');?>" target="main-frame">添加角色</a></li>
                         </ul>
                     </div>
                 </li>
@@ -100,11 +99,11 @@
         </div>
     </div>
     <div id="foot-div" onmouseover="showBar(this)" onmouseout="hideBar(this)">
-        <a href="#" target="main-frame">admin</a>
+        <a href="#">admin</a>
         <div class="panel-hint">
             <ul>
                 <li>
-                    <a href="clear_cache" target="main-frame" class="fix-submenu">清除缓存{</a>
+                    <a href="clear_cache" target="main-frame" class="fix-submenu">清除缓存</a>
                 </li>
                 <li class="btn-exit">
                     <a href="logout" target="_top" class="fix-submenu">退出</a>

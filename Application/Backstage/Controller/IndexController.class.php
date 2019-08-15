@@ -7,9 +7,12 @@
  */
 namespace Backstage\Controller;
 
-use Think\Controller;
-
-class IndexController extends Controller {
+/**
+ * Class IndexController
+ * 定义后台首页控制器类
+ * @package Backstage\Controller
+ */
+class IndexController extends BaseController {
 
     // 显示后台首页
     public function index(){
