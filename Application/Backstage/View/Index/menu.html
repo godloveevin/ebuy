@@ -21,14 +21,14 @@
         <div id="menu-list">
             <ul class="menu" id="menu-ul">
 
-                <li key="02_cat_and_goods" class="icon-goods" data-url="goods.php?act=list" data-key="01_goods_list" name="menu" onclick="showsub(this)">
+                <li key="02_cat_and_goods" class="icon-goods" data-url="{:U('Goods/index')}" data-key="01_goods_list" name="menu" onclick="showsub(this)">
                     商品管理
                     <div class="submenu">
                         <div class="title">商品管理</div>
                         <ul>
                             <li id="sub-menu-01_goods_list" class="menu-item" onclick="showact(this, event)"><a href="goods.php?act=list" target="main-frame">商品列表</a></li>
                             <li id="sub-menu-02_goods_add" class="menu-item" onclick="showact(this, event)"><a href="goods.php?act=add" target="main-frame">添加新商品</a></li>
-                            <li id="sub-menu-03_category_list" class="menu-item" onclick="showact(this, event)"><a href="category.php?act=list" target="main-frame">商品分类</a></li>
+                            <li id="sub-menu-03_category_list" class="menu-item" onclick="showact(this, event)"><a href="{:U('Category/index')}" target="main-frame">商品分类</a></li>
                             <li id="sub-menu-05_comment_manage" class="menu-item" onclick="showact(this, event)"><a href="comment_manage.php?act=list" target="main-frame">用户评论</a></li>
                             <li id="sub-menu-06_goods_brand_list" class="menu-item" onclick="showact(this, event)"><a href="brand.php?act=list" target="main-frame">商品品牌</a></li>
                             <li id="sub-menu-08_goods_type" class="menu-item" onclick="showact(this, event)"><a href="goods_type.php?act=manage" target="main-frame">商品类型</a></li>

@@ -1,0 +1,149 @@
+<extend name="Public:base" />
+<block name="main">
+<h1>
+    <a class="btn btn-right" href="{:U('Category/add')}">添加分类</a>
+    <span class="action-span1"><a href="{:U('Index/index')}">后台管理中心</a> </span>
+    <span id="search_id" class="action-span1">  >   商品分类 </span>
+    <div style="clear:both"></div>
+</h1>
+<script type="text/javascript" src="__PUBLIC_BACKSTAGE__/js/listtable.js"></script>
+<form method="post" action="" name="listForm">
+    <!-- start ad position list -->
+    <div class="list-div" id="listDiv">
+        <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+            <tr>
+                <th>分类名称</th>
+                <th>商品数量</th>
+                <th>数量单位</th>
+                <th>导航栏</th>
+                <th>是否显示</th>
+                <th>价格分级</th>
+                <th>排序</th>
+                <th>操作</th>
+            </tr>
+            <foreach name="cat_Info" item="cat">
+            <tr align="center" class="{$cat.level}" id="{$cat.level}_{$cat.cat_id}">
+                <td align="left" class="first-cell" >
+                    <if condition="$cat.is_leaf neq 1">
+                    <img src="__PUBLIC_BACKSTAGE__/images/menu_minus.gif" id="icon_{$cat.level}_{$cat.cat_id}" width="9" height="9" border="0" style="margin-left:{$cat.step}em;background-color:#000080;color:#000080;" onclick="rowClicked(this)" />
+                    </if>
+                        <if condition="$cat.is_leaf eq 1">
+                    <img src="__PUBLIC_BACKSTAGE__/images/menu_minus.gif" width="9" height="9" border="0" style="margin-left:{$cat.step}em" />
+                    </if>
+                    <span><a href="goods.php?act=list&cat_id={$cat.cat_id}">{$cat.cat_name}</a></span>
+                    <if condition="$cat.cat_image neq ''">
+                    <img src="__PUBLIC_BACKSTAGE__/{$cat.cat_image}" border="0" style="vertical-align:middle;" width="60px" height="21px">
+                    </if>
+                </td>
+                <td width="10%">50</td>
+                <td width="10%">
+                    <span onclick="listTable.edit(this, 'edit_measure_unit', {$cat.cat_id})">
+                        <if condition="$cat.measure_unit">{$cat.measure_unit}<else>&nbsp;&nbsp;&nbsp;&nbsp;</if>
+                    </span>
+                </td>
+                <td width="10%">
+                    <if condition="($cat.show_in_nav eq 1)" >
+                    <img src="__PUBLIC_BACKSTAGE__/images/yes.svg"width="20" onclick="listTable.toggle(this, 'toggle_show_in_nav', {$cat.cat_id})" />
+                    </if>
+                    <if condition="($cat.show_in_nav neq 1)">
+                    <img src="__PUBLIC_BACKSTAGE__/images/no.svg"width="20" onclick="listTable.toggle(this, 'toggle_show_in_nav', {$cat.cat_id})" />
+                    </if>
+                </td>
+                <td width="10%">
+                    <if condition="($cat.is_show eq 1)" >
+                    <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" onclick="listTable.toggle(this, 'toggle_is_show', {$cat.cat_id})" />
+                     </if>
+                    <if condition="($cat.is_show neq 1)">
+                     <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" onclick="listTable.toggle(this, 'toggle_is_show', {$cat.cat_id})" />
+                     </if>
+                </td>
+                <td><span onclick="listTable.edit(this, 'edit_grade', {$cat.cat_id})">{$cat.grade}</span></td>
+                <td width="10%" align="right"><span onclick="listTable.edit(this, 'edit_sort_order', {$cat.cat_id})">{$cat.sort_order}</span></td>
+                <td width="24%" align="center">
+                    <a href="category.php?act=move&cat_id={$cat.cat_id}">转移商品</a> |
+                    <a href="category.php?act=edit&amp;cat_id={$cat.cat_id}">编辑</a> |
+                    <a href="javascript:" onclick="listTable.remove({$cat.cat_id}, '确认删除';)" title="删除">删除</a>
+                </td>
+            </tr>
+            </foreach>
+        </table>
+    </div>
+</form>
+
+<script language="JavaScript">
+        <!--
+
+        onload = function()
+        {
+            // 开始检查订单
+            startCheckOrder();
+        };
+
+        var imgPlus = new Image();
+        imgPlus.src = "images/menu_plus.gif";
+
+        /**
+         * 折叠分类列表
+         */
+        function rowClicked(obj)
+        {
+            // 当前图像
+            img = obj;
+            // 取得上二级tr>td>img对象
+            obj = obj.parentNode.parentNode;
+            // 整个分类列表表格
+            var tbl = document.getElementById("list-table");
+            // 当前分类级别
+            var lvl = parseInt(obj.className);
+            // 是否找到元素
+            var fnd = false;
+            var sub_display = img.src.indexOf('menu_minus.gif') > 0 ? 'none' : (Browser.isIE) ? 'block' : 'table-row' ;
+            // 遍历所有的分类
+            for (i = 0; i < tbl.rows.length; i++)
+            {
+                var row = tbl.rows[i];
+                if (row == obj)
+                {
+                    // 找到当前行
+                    fnd = true;
+                    //document.getElementById('result').innerHTML += 'Find row at ' + i +"<br/>";
+                }
+                else
+                {
+                    if (fnd == true)
+                    {
+                        var cur = parseInt(row.className);
+                        var icon = 'icon_' + row.id;
+                        if (cur > lvl)
+                        {
+                            row.style.display = sub_display;
+                            if (sub_display != 'none')
+                            {
+                                if(img.src.indexOf('menu_minus.gif') > 0){
+                                    var iconimg = document.getElementById(icon);
+                                    iconimg.src = iconimg.src.replace('plus.gif', 'minus.gif');
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            fnd = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            for (i = 0; i < obj.cells[0].childNodes.length; i++)
+            {
+                var imgObj = obj.cells[0].childNodes[i];
+                if (imgObj.tagName == "IMG" && imgObj.src != 'images/menu_arrow.gif')
+                {
+                    imgObj.src = (imgObj.src == imgPlus.src) ? 'images/menu_minus.gif' : imgPlus.src;
+                }
+            }
+        }
+        //-->
+    </script>
+</block>
