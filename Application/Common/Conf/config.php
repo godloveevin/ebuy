@@ -11,13 +11,15 @@ return array(
     'DB_PORT'               =>  '3306',                                              // 端口
     'DB_PREFIX'             =>  'eb_',                                               // 数据库表前缀
 
+    /* 默认访问模块的配置 */
     'URL_MODEL'             =>  2,                                                   // 设置url访问模式为重写模式
     'DEFAULT_MODULE'        =>  'Home',                                              // 设置默认的访问模块为Home
     'MODULE_ALLOW_LIST'     =>  array('Api','Home','Backstage'),                    // 设置允许访问的模块
 
+    /* 字符串替换的配置 */
     'TMPL_PARSE_STRING'     =>  array(
         '__PUBLIC_BACKSTAGE__'  =>  '/Public/Backstage',                            // 后台资源文件
         '__PUBLIC_HOME__'       =>  '/Public/Home',                                 // 前台资源文件
         '__PUBLIC_API__'        =>  '/Public/Api',                                  // API资源文件
-    ),                                                                              // 配置字符串替换
+    ),
 );
