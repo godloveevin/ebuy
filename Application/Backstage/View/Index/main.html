@@ -6,7 +6,6 @@
     <div style="clear:both"></div>
 </h1>
 
-
 <!-- start order statistics -->
 <div class="panel">
     <h2 class="group-title">订单统计信息</h2>
@@ -38,6 +37,7 @@
     </table>
 </div>
 <!-- end order statistics -->
+
 <div class="clearfix" style="min-width: 1090px">
     <div class="panel analysis">
         <!-- start goods statistics -->
@@ -181,57 +181,5 @@
         </tr>
     </table>
 </div>
-
-
-<script type="Text/Javascript" language="JavaScript">
-    onload = function()
-    {
-        /* 检查订单 */
-        startCheckOrder();
-    };
-
-    function api_styel()
-    {
-        if(document.getElementById("Marquee") != null)
-        {
-            var Mar = document.getElementById("Marquee");
-            if (Browser.isIE)
-            {
-                Mar.style.height = "52px";
-            }
-            else
-            {
-                Mar.style.height = "36px";
-            }
-
-            var child_div=Mar.getElementsByTagName("div");
-
-            var picH = 16;//移动高度
-            var scrollstep=2;//移动步幅,越大越快
-            var scrolltime=30;//移动频度(毫秒)越大越慢
-            var stoptime=4000;//间断时间(毫秒)
-            var tmpH = 0;
-
-            function start()
-            {
-                if(tmpH < picH)
-                {
-                    tmpH += scrollstep;
-                    if(tmpH > picH )tmpH = picH ;
-                    Mar.scrollTop = tmpH;
-                    setTimeout(start,scrolltime);
-                }
-                else
-                {
-                    tmpH = 0;
-                    Mar.appendChild(child_div[0]);
-                    Mar.scrollTop = 0;
-                    setTimeout(start,stoptime);
-                }
-            }
-            setTimeout(start,stoptime);
-        }
-    }
-</script>
 
 </block>

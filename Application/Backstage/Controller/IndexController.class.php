@@ -30,6 +30,21 @@ class IndexController extends BaseController {
     public function main(){
         $this->display();
     }
+
+    //设置导航栏
+    public function setting(){}
     // 关于我们
     public function aboutUs(){}
+
+    // 留言板
+    public function msgList(){}
+
+    // 帮助
+    public function help(){}
+
+    // 开店向导
+    public function openShopGuide(){}
+
+    // 服务市场
+    public function serverMarket(){}
 }
