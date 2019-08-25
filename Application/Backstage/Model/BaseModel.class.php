@@ -16,4 +16,9 @@ use Think\Model;
  */
 class BaseModel extends Model {
 
+    // 根据id获取一行数据
+    public function findOneById($id){
+        return $this->where('id='.$id)->find();
+    }
+
 }

@@ -1,0 +1,100 @@
+<extend name="Public:base" />
+<block name="main">
+<h1>
+    <a class="btn btn-right" href="{:U('Category/index')}">商品分类</a>
+    <span class="action-span1"><a href="{:U('Index/index')}">EBUY 管理中心</a>
+    </span><span id="search_id" class="action-span1">&nbsp;&nbsp;>&nbsp;&nbsp;添加分类 </span>
+    <div style="clear:both"></div>
+</h1>
+    <!-- start add new category form -->
+<div class="main-div">
+    <form action="" method="post" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+        <table width="100%" id="general-table">
+            <tr>
+                <td class="label">分类名称:</td>
+                <td>
+                    <input type='text' name='cat_name' maxlength="20" value='' size='27' /> <font color="red">*</font>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">上级分类:</td>
+                <td>
+                    <select name="parent_id" style="width: 200px;">
+                        <option value="0">|--顶级分类</option>
+                        <volist name="catInfos" id="vo">
+                            <option value="{$vo.cat_id}">|{$vo.level|str_repeat='--',###}{$vo.cat_name}</option>
+                        </volist>
+                    </select>
+                </td>
+            </tr>
+            <tr id="measure_unit">
+                <td class="label">数量单位:</td>
+                <td>
+                    <input type="text" name='measure_unit' value='' size="12" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">排序:</td>
+                <td>
+                    <input type="text" name='sort_order'  value="50" size="15" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">是否显示:</td>
+                <td>
+                    <input type="radio" name="is_show" value="1"  checked="true"/> 是
+                    <input type="radio" name="is_show" value="0"  /> 否
+                </td>
+            </tr>
+            <tr>
+                <td class="label">是否显示在导航栏:</td>
+                <td>
+                    <input type="radio" name="show_in_nav" value="1" /> 是
+                    <input type="radio" name="show_in_nav" value="0"  checked="true" /> 否
+                </td>
+            </tr>
+            <tr>
+                <td class="label">设置为首页推荐:</td>
+                <td>
+                    <input type="radio" name="is_rec" value="1" checked/> 是
+                    <input type="radio" name="is_rec" value="0"/> 否
+                </td>
+            </tr>
+
+            <tr>
+                <td class="label"></td>
+            </tr>
+            <tr>
+                <td class="label">关键字:</td>
+                <td><input type="text" name="keywords" value='' size="50">
+                </td>
+            </tr>
+
+            <tr>
+                <td class="label">分类描述:</td>
+                <td>
+                    <textarea name='cat_desc' rows="6" cols="51"></textarea>
+                </td>
+            </tr>
+        </table>
+        <div class="button-div">
+            <input type="submit" class="btn" value=" 确定 " />
+            <input type="reset" class="btn btn-def" value=" 重置 " />
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC_BACKSTAGE__/js/validator.js"></script>
+<script language="JavaScript">
+    // 聚焦分类名称输入框
+    document.forms['theForm'].elements['cat_name'].focus();
+    /**
+     * 检查表单输入的数据
+     */
+    function validate()
+    {
+        validator = new Validator("theForm");
+        validator.required("cat_name",'分类名不能为空！');
+        return validator.passed();
+    }
+</script>
+</block>
