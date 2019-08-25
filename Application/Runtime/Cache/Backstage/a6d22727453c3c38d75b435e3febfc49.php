@@ -9,40 +9,26 @@
 <body class="nav">
 <div class="menu">
     <div id="logo-div">
-        <a href="index.php"><img width="87" class="logo" src="/Public/Backstage/images/ecshop_logo@2x.png" alt="ECSHOP - power for e-commerce" /></a>
-        <!--{if $http_host=='localhost' or !$single_url}-->
-        <a href="javascript:" class="noauthorize"><img src="/Public/Backstage/images/noauthorize.png" class="icon" width="12"> 未授权用户</a>
-        <!--{else}
-        <a class="{if $authorization}authorize{else}noauthorize{/if}" href="<?php echo ($single_url); ?>" target="_blank"><img src="/Public/Backstage/images/{if $authorization}authorize{else}noauthorize{/if}.png" class="icon" width="12"> {if $authorization}<?php echo ($authorize_name); ?>{else}未授权用户{/if}</a>
-        {/if}-->
+        <a href="<?php echo U('Index/index');?>"><img width="87" class="logo" src="/Public/Backstage/images/ecshop_logo@2x.png" alt="ECSHOP - power for e-commerce" /></a>
+        <a href="javascript:" class="noauthorize"><img src="/Public/Backstage/images/authorizegk.png" class="icon" width="12"> 授权用户</a>
     </div>
     <div id="license-div"></div>
     <div id="main-div">
         <div id="menu-list">
             <ul class="menu" id="menu-ul">
 
-                <li key="02_cat_and_goods" class="icon-goods" data-url="goods.php?act=list" data-key="01_goods_list" name="menu" onclick="showsub(this)">
+                <li key="02_cat_and_goods" class="icon-goods" data-url="<?php echo U('Goods/index');?>" data-key="01_goods_list" name="menu" onclick="showsub(this)">
                     商品管理
                     <div class="submenu">
                         <div class="title">商品管理</div>
                         <ul>
-                            <li id="sub-menu-01_goods_list" class="menu-item" onclick="showact(this, event)"><a href="goods.php?act=list" target="main-frame">商品列表</a></li>
-                            <li id="sub-menu-02_goods_add" class="menu-item" onclick="showact(this, event)"><a href="goods.php?act=add" target="main-frame">添加新商品</a></li>
-                            <li id="sub-menu-03_category_list" class="menu-item" onclick="showact(this, event)"><a href="category.php?act=list" target="main-frame">商品分类</a></li>
-                            <li id="sub-menu-05_comment_manage" class="menu-item" onclick="showact(this, event)"><a href="comment_manage.php?act=list" target="main-frame">用户评论</a></li>
-                            <li id="sub-menu-06_goods_brand_list" class="menu-item" onclick="showact(this, event)"><a href="brand.php?act=list" target="main-frame">商品品牌</a></li>
-                            <li id="sub-menu-08_goods_type" class="menu-item" onclick="showact(this, event)"><a href="goods_type.php?act=manage" target="main-frame">商品类型</a></li>
-                            <li id="sub-menu-11_goods_trash" class="menu-item" onclick="showact(this, event)"><a href="goods.php?act=trash" target="main-frame">商品回收站</a></li>
-                            <li id="sub-menu-12_batch_pic" class="menu-item" onclick="showact(this, event)"><a href="picture_batch.php" target="main-frame">图片批量处理</a></li>
-                            <li id="sub-menu-13_batch_add" class="menu-item" onclick="showact(this, event)"><a href="goods_batch.php?act=add" target="main-frame">商品批量上传</a></li>
-                            <li id="sub-menu-14_goods_export" class="menu-item" onclick="showact(this, event)"><a href="goods_export.php?act=goods_export" target="main-frame">商品批量导出</a></li>
-                            <li id="sub-menu-15_batch_edit" class="menu-item" onclick="showact(this, event)"><a href="goods_batch.php?act=select" target="main-frame">商品批量修改</a></li>
-                            <li id="sub-menu-16_goods_script" class="menu-item" onclick="showact(this, event)"><a href="gen_goods_script.php?act=setup" target="main-frame">生成商品代码</a></li>
-                            <li id="sub-menu-17_tag_manage" class="menu-item" onclick="showact(this, event)"><a href="tag_manage.php?act=list" target="main-frame">标签管理</a></li>
-                            <li id="sub-menu-50_virtual_card_list" class="menu-item" onclick="showact(this, event)"><a href="goods.php?act=list&extension_code=virtual_card" target="main-frame">虚拟商品列表</a></li>
-                            <li id="sub-menu-51_virtual_card_add" class="menu-item" onclick="showact(this, event)"><a href="goods.php?act=add&extension_code=virtual_card" target="main-frame">添加虚拟商品</a></li>
-                            <li id="sub-menu-52_virtual_card_change" class="menu-item" onclick="showact(this, event)"><a href="virtual_card.php?act=change" target="main-frame">更改加密串</a></li>
-                            <li id="sub-menu-goods_auto" class="menu-item" onclick="showact(this, event)"><a href="goods_auto.php?act=list" target="main-frame">商品自动上下架</a></li>
+                            <li id="sub-menu-01_goods_list" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('goods/index');?>" target="main-frame">商品列表</a></li>
+                            <li id="sub-menu-02_goods_add" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('goods/add');?>" target="main-frame">添加新商品</a></li>
+                            <li id="sub-menu-03_category_list" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('Category/index');?>" target="main-frame">商品分类</a></li>
+                            <li id="sub-menu-05_comment_manage" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('comment/index');?>" target="main-frame">用户评论</a></li>
+                            <li id="sub-menu-06_goods_brand_list" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('goods/brand');?>" target="main-frame">商品品牌</a></li>
+                            <li id="sub-menu-08_goods_type" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('goods/type');?>" target="main-frame">商品类型</a></li>
+                            <li id="sub-menu-11_goods_trash" class="menu-item" onclick="showact(this, event)"><a href="<?php echo U('goods/trash');?>" target="main-frame">商品回收站</a></li>
                         </ul>
                     </div>
                 </li>
