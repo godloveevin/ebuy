@@ -63,4 +63,9 @@ class GoodsController extends BaseController {
 
     // 商品复制
     public function copy(){}
+
+    // 添加空操作方法，提升用户体验
+    public function _empty(){
+        echo '该系统的模块('.MODULE_NAME.')下的控制器('.CONTROLLER_NAME.')中没有实现您访问的操作('.ACTION_NAME.')，请检查系统代码！';
+    }
 }
