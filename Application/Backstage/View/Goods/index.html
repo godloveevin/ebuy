@@ -1,0 +1,102 @@
+<extend name="Public:base" />
+<block name="main">
+<h1>
+    <a href="{:U('Goods/add')}" class="btn btn-right btn-add-goods">添加新商品</a>
+    <span class="action-span1"><a href="{:U('Index/main')}">EBUY 管理中心</a> </span>
+    <span id="search_id" class="action-span1"> > 商品列表 </span>
+    <div style="clear:both"></div>
+</h1>
+<!-- 商品搜索 -->
+<div class="form-div">
+    <form action="">
+        <!-- 分类 -->
+        商品分类
+        <select name="cat_id">
+            <option value="0">所有分类</option>
+        </select>
+        <!-- 推荐 -->
+        推荐类别
+        <select name="intro_type">
+            <option value="0">全部</option>
+            <option value="is_best">精品</option>
+            <option value="is_new">新品</option>
+            <option value="is_hot">热销</option>
+            <option value="is_promote">特价</option>
+            <option value="all_type">全部推荐</option>
+        </select>
+        <!-- 上架 -->
+        上架状态
+        <input type="radio" name="is_on_sale" id="" value="1"> 上架
+        <input type="radio" name="is_on_sale" id="" value="0"> 下架
+        <!-- 关键字 -->
+        &nbsp;&nbsp; 关键字 <input type="text" name="keyword" size="25" />
+        <button type="submit" class="btn"> 搜索 </button>
+    </form>
+</div>
+
+<!-- 商品列表 -->
+<form method="post" action="" name="listForm">
+    <!-- start goods list -->
+    <div class="list-div" id="listDiv">
+        <table cellpadding="3" cellspacing="1">
+            <tr>
+                <th class="checks"><input type="checkbox"></th>
+                <th><a href="">编号</a><img src="__PUBLIC_BACKSTAGE__/images/sort_desc.png"/></th>
+                <th><a href="">商品名称</a></th>
+                <th><a href="">货号</a></th>
+                <th><a href="">价格</a></th>
+                <th><a href="">上架</a></th>
+                <th><a href="">精品</a></th>
+                <th><a href="">新品</a></th>
+                <th><a href="">热销</a></th>
+                <th><a href="">推荐排序</a></th>
+                <th><a href="">库存</a></th>
+                <th>操作</th>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="checkboxes[]" value="72"></td>
+                <td>72</td>
+                <td class="first-cell" style=""><span>智能相机</span></td>
+                <td><span>ECS000072</span></td>
+                <td align="right"><span>149.00</span></td>
+                <td align="center"><img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" /></td>
+                <td align="center"><img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20"/></td>
+                <td align="center"><img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" /></td>
+                <td align="center"><img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" /></td>
+                <td align="center"><span>100</span></td>
+                <td align="right"><span>20</span></td>
+                <td align="center">
+                    <a href="{:U('details','good_idd=72')}" title="查看">查看</a>
+                    <a href="{:U('edit','good_id=72')}" title="编辑">编辑</a>
+                    <a href="{:U('copy','good_id=72')}" title="复制">复制</a>
+                    <a href="javascript:" onclick="trash(72, '您确实要把该商品放入回收站吗？')" title="回收站">回收站</a>
+                    <img src="__PUBLIC_BACKSTAGE__/images/icon_trash.gif" width="16" height="16" border="0">
+                </td>
+            </tr>
+        </table>
+        <!-- end goods list -->
+
+        <!-- 分页 -->
+        <table id="page-table" cellspacing="0">
+            <tr>
+                <td align="right" nowrap="true">
+                    <div id="turn-page">
+                        <span id="pageCurrent">1</span> / <span id="totalPages">3</span>
+                        页，每页 <input type='text' size='3' id='pageSize' value="15" onkeypress="return listTable.changePageSize(event)">
+                        条记录，总共 <span id="totalRecords">38</span>
+                        条记录
+                        <span id="page-link">
+                        <a href="javascript:listTable.gotoPageFirst()">第一页</a>
+                        <a href="javascript:listTable.gotoPagePrev()">上一页</a>
+                        <a href="javascript:listTable.gotoPageNext()">下一页</a>
+                        <a href="javascript:listTable.gotoPageLast()">最末页</a>
+                        <select id="gotoPage" onchange="listTable.gotoPage(this.value)">
+                          <option value='1'>1</option><option value='2'>2</option><option value='3'>3</option>    </select>
+                      </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+</block>

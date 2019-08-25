@@ -23,4 +23,17 @@ class BaseController extends Controller {
 
 
     }
+
+    /**
+     * 获取数据表的所有字段信息，以‘a','b','c'.的格式
+     * @param array $array 为索引数组
+     * @return string
+     */
+    protected function getFieldsToSting($array=array()){
+        $res = '';
+        foreach($array as $k=>$v){
+            $res.= "'".$v."',";
+        }
+        return $res;
+    }
 }
