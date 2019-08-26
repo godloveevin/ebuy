@@ -91,14 +91,14 @@
                     if(data.status == 1){
                         load_div.style.color = '#2b9bde';
                         load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
-                        location.reload();
                     }else{
+                        load_div.style.color = '#FF9900';
                         load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
-                        console.log(load_div.innerHTML);
                     }
                     setTimeout(function () {
                         load_div.style.display = 'none';
-                    },3000);
+                        if(data.status == 1) location.reload();
+                    },1000);
                 },'json');
             }
         }
