@@ -8,6 +8,7 @@
     <script type="text/javascript" src="/Public/Backstage/js/common.js"></script>
     <script type="text/javascript" src="/Public/Backstage/js/transport.js"></script>
     <script type="text/javascript" src="/Public/Backstage/js/utils.js"></script>
+    <script type="text/javascript" src="/Public/Backstage/js/listtable.js"></script>
     <script type="text/javascript" src="/Public/Backstage/js/ajax.js"></script>
 </head>
 <body>

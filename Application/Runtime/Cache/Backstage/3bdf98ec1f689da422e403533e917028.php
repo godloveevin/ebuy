@@ -10,10 +10,10 @@
         }
     </script>
     <frameset cols="120, *" framespacing="0" border="0" id="frame-body">
-        <frame src="menu" id="menu-frame" name="menu-frame" frameborder="no" scrolling="yes">
+        <frame src="<?php echo U('menu');?>" id="menu-frame" name="menu-frame" frameborder="no" scrolling="yes">
         <frameset rows="100,*" framespacing="0" border="0">
-            <frame src="top" id="header-frame" name="header-frame" frameborder="no" scrolling="no">
-            <frame src="main" id="main-frame" name="main-frame" frameborder="no" scrolling="yes">
+            <frame src="<?php echo U('top');?>" id="header-frame" name="header-frame" frameborder="no" scrolling="no">
+            <frame src="<?php echo U('main');?>" id="main-frame" name="main-frame" frameborder="no" scrolling="yes">
         </frameset>
     </frameset>
 </head>
