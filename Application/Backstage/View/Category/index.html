@@ -12,6 +12,7 @@
     <div class="list-div" id="listDiv">
         <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
             <tr>
+                <th>编号</th>
                 <th>分类名称</th>
                 <th>商品数量</th>
                 <th>数量单位</th>
@@ -23,6 +24,7 @@
             </tr>
             <foreach name="cat_Info" item="cat">
             <tr align="center" class="{$cat.level}" id="{$cat.level}_{$cat.cat_id}">
+                <td width="2%">{$cat.cat_id}</td>
                 <td align="left" class="first-cell" >
                     <if condition="$cat.is_leaf neq 1">
                     <img src="__PUBLIC_BACKSTAGE__/images/menu_minus.gif" id="icon_{$cat.level}_{$cat.cat_id}" width="9" height="9" border="0" style="margin-left:{$cat.step}em;background-color:#000080;color:#000080;" onclick="rowClicked(this)" />
@@ -35,7 +37,7 @@
                     <img src="__PUBLIC_BACKSTAGE__/{$cat.cat_image}" border="0" style="vertical-align:middle;" width="60px" height="21px">
                     </if>
                 </td>
-                <td width="10%">50</td>
+                <td width="10%">{$cat.sort_order}</td>
                 <td width="10%">
                     <span onclick="listTable.edit(this, 'edit_measure_unit', {$cat.cat_id})">
                         <if condition="$cat.measure_unit">{$cat.measure_unit}<else>&nbsp;&nbsp;&nbsp;&nbsp;</if>
@@ -43,29 +45,29 @@
                 </td>
                 <td width="10%">
                     <if condition="($cat.show_in_nav eq 1)" >
-                    <img src="__PUBLIC_BACKSTAGE__/images/yes.svg"width="20" onclick="listTable.toggle(this, 'toggle_show_in_nav', {$cat.cat_id})" />
+                    <img src="__PUBLIC_BACKSTAGE__/images/yes.svg"width="20"/>
                     </if>
                     <if condition="($cat.show_in_nav neq 1)">
-                    <img src="__PUBLIC_BACKSTAGE__/images/no.svg"width="20" onclick="listTable.toggle(this, 'toggle_show_in_nav', {$cat.cat_id})" />
+                    <img src="__PUBLIC_BACKSTAGE__/images/no.svg"width="20"/>
                     </if>
                 </td>
                 <td width="10%">
                     <if condition="($cat.is_show eq 1)" >
-                    <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" onclick="listTable.toggle(this, 'toggle_is_show', {$cat.cat_id})" />
+                    <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20"/>
                      </if>
                     <if condition="($cat.is_show neq 1)">
-                     <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" onclick="listTable.toggle(this, 'toggle_is_show', {$cat.cat_id})" />
+                     <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20"/>
                      </if>
                 </td>
                 <td width="10%">
                     <if condition="($cat.is_rec eq 1)" >
-                        <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" onclick="listTable.toggle(this, 'toggle_is_rec', {$cat.cat_id})" />
+                        <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20"/>
                     </if>
                     <if condition="($cat.is_rec neq 1)">
-                        <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" onclick="listTable.toggle(this, 'toggle_is_rec', {$cat.cat_id})" />
+                        <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20"/>
                     </if>
                 </td>
-                <td width="10%" align="right"><span onclick="listTable.edit(this, 'edit_sort_order', {$cat.cat_id})">{$cat.sort_order}</span></td>
+                <td width="10%" align="right"><span>{$cat.sort_order}</span></td>
                 <td width="24%" align="center">
                     <a href="category.php?act=move&cat_id={$cat.cat_id}">转移商品</a> |
                     <a href="{:U('edit','cat_id='.$cat['cat_id'])}">编辑</a> |
@@ -84,12 +86,19 @@
             if(confirm(opt)) {
                 var url = '/Backstage/Category/dels/cat_id/'+cat_id;
                 $.get(url, function (data) {
+                    var load_div = parent.frames['header-frame'].document.getElementById('load-div');
+                    load_div.style.display = '';
                     if(data.status == 1){
-                        alert(data.msg);
+                        load_div.style.color = '#2b9bde';
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
                         location.reload();
                     }else{
-                        alert(data.msg);
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                        console.log(load_div.innerHTML);
                     }
+                    setTimeout(function () {
+                        load_div.style.display = 'none';
+                    },3000);
                 },'json');
             }
         }

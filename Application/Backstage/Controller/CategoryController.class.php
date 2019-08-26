@@ -86,10 +86,13 @@ class CategoryController extends BaseController{
         // 删除分类逻辑
         // 如果有子分类，则禁止删除
         // 如果该分类下有商品的话，禁止删除
-        if(D('Category')->getChildCat($cat_id))
+        $model = D('Category');
+        if($model->getChildCat($cat_id))
             $this->ajaxReturn(array('status'=>0,'msg'=>'删除失败，有子分类禁止删除'));
-        if(!D('Category')->dels($cat_id))
-            $this->ajaxReturn(array('status'=>0,'msg'=>'删除失败'));
+        if(D('Goods')->getGoodsInfoByCatId($cat_id))
+            $this->ajaxReturn(array('status'=>0,'msg'=>'删除失败，分类下有商品禁止删除'));
+        if(!$model->dels($cat_id))
+            $this->ajaxReturn(array('status'=>0,'msg'=>'删除失败，系统错误'));
         $this->ajaxReturn(array('status'=>1,'msg'=>'ok!'));
     }
 

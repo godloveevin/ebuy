@@ -77,4 +77,9 @@ class GoodsModel extends BaseModel {
 
     }
 
+    // 根据分类id获取商品信息
+    public function getGoodsInfoByCatId($cat_id=''){
+        return $this->where(array('cat_id'=>$cat_id,'is_del'=>0))->find();
+    }
+
 }
