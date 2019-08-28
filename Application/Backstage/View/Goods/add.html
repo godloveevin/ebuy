@@ -65,6 +65,7 @@
                                 <option value="{$catInfo.cat_id}" >|{$catInfo.level|str_repeat='--',###}{$catInfo.cat_name}</option>
                                 </volist>
                             </select>
+                            <!--<input type="button" value="删除" id="del_ext_cate"/>--><!--暂且搁置-->
                         </td>
 
                     </tr>
@@ -250,6 +251,14 @@
             var selectElement = $(this).next().clone();
             $(this).parent().append(selectElement);
         });
+
+        /**
+         * 珊瑚扩展分类
+         */
+        /*$('#del_ext_cate').click(function(){
+            var delElement = $(this).prev();
+            delElement.remove();
+        });*/
 
 
     </script>

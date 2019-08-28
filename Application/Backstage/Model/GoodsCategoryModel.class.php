@@ -9,7 +9,7 @@
 namespace Backstage\Model;
 
 /**
- * Class GoodsModel
+ * Class GoodsCategoryModel
  * 定义商品模型
  * @package Backstage\Model
  */
