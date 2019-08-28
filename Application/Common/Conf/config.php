@@ -23,4 +23,7 @@ return array(
         '__PUBLIC_HOME__'       =>  '/Public/Home',                                  // 前台资源文件
         '__PUBLIC_API__'        =>  '/Public/Api',                                   // API资源文件
     ),
+
+    /* 配置分页参数 */
+    'PAGE_SIZE'                 =>  10,                                               // 每页显示的记录数
 );

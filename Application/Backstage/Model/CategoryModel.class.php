@@ -26,7 +26,6 @@ class CategoryModel extends BaseModel {
     // 自动验证
     protected $_validate = array(
         array('cat_name','require','分类名称必须填写',),
-        // array('cat_name','','分类名称不能重复',0,'unique',1),
     );
 
     // 获取商品分类数据
@@ -36,6 +35,16 @@ class CategoryModel extends BaseModel {
             $this->error = "暂无商品分类数据";
         }
         $res = $this->getTreeData($data,$parent_id=0,$level=1,$isCached=true);
+        return $res;
+    }
+
+    // 获取商品分类数据，不缓存
+    public function getTreeCatInfoNoCached($fields='*',$parent_id=0){
+        $data = $this->field($fields)->where('is_show=1')->select();
+        if(!$data){
+            $this->error = "暂无商品分类数据";
+        }
+        $res = $this->getTreeData($data,$parent_id,$level=1,$isCached=false);
         return $res;
     }
 

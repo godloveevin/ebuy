@@ -15,17 +15,54 @@ namespace Backstage\Controller;
 class GoodsController extends BaseController {
     // 商品列表首页
     public function index(){
+        // 组装搜索条件
+        $where = array();
+        if(IS_POST){
+            // 处理分类搜索条件
+            $cat_id = I('post.cat_id');
+            if(!empty($cat_id)){
+                // 组装分类id
+                $cat_ids[] = $cat_id; // 本分类
+                // 组装本分类下的子分类
+                $sub_cat_ids = D('Category')->getTreeCatInfoNoCached("cat_id,cat_name,parent_id",$cat_id);
+                foreach ($sub_cat_ids as $k=>$v) {
+                    $cat_ids[] = $v['cat_id'];
+                }
+                $where['cat_id'] = array('in',$cat_ids);
+            }
+
+            // 处理推荐类型搜索条件
+            $intro_type = I('post.intro_type');
+            if(!empty($intro_type)) $where[$intro_type] = 1;
+
+            // 处理上下架搜索条件
+            $is_sale = I('post.is_sale');
+            if(isset($is_sale) && ($is_sale!=null)) $where['is_sale'] = $is_sale;
+
+            // 处理关键字搜索条件
+            $keywords = I('post.keyword');
+            if(!empty($keywords)){
+                // 单个词的搜索
+                $where['good_name'] = array('like','%'.$keywords.'%');
+            }
+        }
+
+        // 获取分类信息并赋值给模板
+        $catInfos = D('Category')->getTreeCatInfo("cat_id,cat_name,parent_id");
+        $goodInfos = D('Goods')->getGoodsInfoList($where);
+        $this->assign(array(
+            'catInfos' => $catInfos,
+            'goodInfos' => $goodInfos['data'],
+            'pageInfo'=>$goodInfos['pageInfo'],
+        ));
         $this->display();
     }
 
     // 添加商品
     public function add(){
         if(IS_GET){
-            // echo $this->getFieldsToSting(D('Goods')->getDbFields());die;//获取表字段
-
             // 获取分类信息并赋值给模板
             $catInfos = D('Category')->getTreeCatInfo("cat_id,cat_name,parent_id");
-            // dump($catInfos);die;
             $this->assign('catInfos',$catInfos);
             $this->display();
         }else{

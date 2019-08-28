@@ -61,12 +61,19 @@
                             <span class="require-field">*</span>
                         </td>
                     </tr>
-                    <!--<tr>
+                    <tr>
                         <td class="label">扩展分类：</td>
                         <td>
-                            <input type="button" value="添加" onclick="addOtherCat(this.parentNode)" class="button btn-def" />
+                            <input type="button" value="添加" id="add_ext_cate"/>
+                            <select name="e_cat_id[]" >
+                                <option value="0">请选择...</option>
+                                <volist name="catInfos" id="catInfo">
+                                <option value="{$catInfo.cat_id}" >|{$catInfo.level|str_repeat='--',###}{$catInfo.cat_name}</option>
+                                </volist>
+                            </select>
                         </td>
-                    </tr>-->
+
+                    </tr>
                     <tr>
                         <td class="label">本店售价：</td>
                         <td>
@@ -92,7 +99,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="label">上传商品主图片：</td>
+                        <td class="label">商品主图片：</td>
                         <td>
                             <div class="upImg">
                                 <input type="file" name="good_img" size="35"/>
@@ -241,6 +248,14 @@
         /**
          * 标签页切换
          */
+
+        /**
+         * 新增扩展分类
+         */
+        $('#add_ext_cate').click(function(){
+            var selectElement = $(this).next().clone();
+            $(this).parent().append(selectElement);
+        });
 
 
     </script>

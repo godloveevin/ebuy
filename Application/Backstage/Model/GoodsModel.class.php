@@ -74,12 +74,84 @@ class GoodsModel extends BaseModel {
 
     // 插入成功后的回调方法
     protected function _after_insert($data,$options) {
-
+        // 完成扩展分类的数据入库
+        $good_id = $data['good_id'];
+        $ext_cat_ids = I('post.e_cat_id');
+        // 去重操作
+        $ext_cat_ids = array_unique($ext_cat_ids);
+        foreach ($ext_cat_ids as $k=>$v){
+            $dataList[] = array(
+                'good_id' => $good_id,
+                'cat_id' => $v,
+            );
+        }
+        // 批量插入
+        $res = M('goods_category')->addAll($dataList);
+        if($res === false){
+            $this->error = '扩展分类入库失败';
+            return false;
+        }
     }
 
     // 根据分类id获取商品信息
     public function getGoodsInfoByCatId($cat_id=''){
         return $this->where(array('cat_id'=>$cat_id,'is_del'=>0))->find();
+    }
+
+    // 根据刷选条件获取商品列表数据
+    public function getGoodsInfoList($condition=array()){
+        $where = $condition;
+        // 默认获取没有被删除的商品
+        $where['is_del'] = 0;
+
+        // 处理分页
+        $pageData = $this->_getPageData($where);
+
+        // 获取数据
+        $data = $this->where($where)->page($pageData['curPage'],$pageData['pageSize'])->select();
+
+        // echo $this->getLastSql();
+        return array('pageInfo'=>$pageData,'data'=>$data);
+    }
+
+    // 获取总记录数
+    public function getTotal($where=''){
+        $where['is_del'] = 0;
+        $res = $this->where($where)->count();
+        return $res;
+    }
+
+    // 获取分页数据
+    private function _getPageData($where=''){
+        // 处理分页条件
+        $cur_page = I('get.p',1);//当前页，默认取
+        $total = $this->getTotal($where);// 总记录数
+        $page_size = C('PAGE_SIZE');//每页显示的条目数
+        $total_pages = ceil($total/$page_size);//总页数
+        // 组装页码url
+        $firstPageUrl = U(ACTION_NAME,'p=1'); // 首页
+        $lastPageUrl = U(ACTION_NAME,'p='.$total_pages); // 尾页
+        if(($cur_page > 1) && ($cur_page <= $total_pages)) {
+            $prevPageUrl = U(ACTION_NAME,'p='.($cur_page-1));
+        }else{
+            $prevPageUrl = 0;
+        }//上一页
+        if(($cur_page >= 1) && ($cur_page < $total_pages)){
+            $nextPageUrl = U(ACTION_NAME,'p='.($cur_page+1));
+        }else{
+            $nextPageUrl = 0;
+        }//下一页
+
+        return array(
+            'curPage' => $cur_page,
+            'total'=> $total,
+            'pageSize'=>$page_size,
+            'totalPages' => $total_pages,
+            'firstPageUrl'=>$firstPageUrl,
+            'lastPageUrl'=>$lastPageUrl,
+            'prevPageUrl'=>$prevPageUrl,
+            'nextPageUrl'=>$nextPageUrl,
+        );
     }
 
 }
