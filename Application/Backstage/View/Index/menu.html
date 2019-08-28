@@ -89,26 +89,17 @@
         <div class="panel-hint">
             <ul>
                 <li>
-                    <a href="clear_cache" target="main-frame" class="fix-submenu">清除缓存</a>
+                    <a href="{:U('clear_cache')}" target="main-frame" class="fix-submenu">清除缓存</a>
                 </li>
                 <li class="btn-exit">
-                    <a href="logout" target="_top" class="fix-submenu">退出</a>
+                    <a href="{:U('login/logout')}" target="_top" class="fix-submenu">退出</a>
                 </li>
             </ul>
         </div>
     </div>
 </div>
 
-<script type="text/javascript" src="__PUBLIC_BACKSTAGE__/js/global.js"></script>
-<script type="text/javascript" src="__PUBLIC_BACKSTAGE__/js/utils.js"></script>
-<script type="text/javascript" src="__PUBLIC_BACKSTAGE__/js/transport.js"></script>
-<script type="text/javascript" src="__PUBLIC_BACKSTAGE__/js/menu.js"></script>
-
 <script language="JavaScript">
-   /* window.setInterval(crontab,30000);
-    function crontab(){
-        Ajax.call('cloud.php?is_ajax=1&act=load_crontab','','', 'GET', 'JSON');
-    }*/
     function showBar(item){
         var silb = item.lastElementChild;
         silb.style.display = "block";
@@ -144,63 +135,6 @@
         }
         el.className = el.className + ' active';
     }
-
-    /**
-     * 创建XML对象
-     */
-    function createDocument()
-    {
-        var xmlDoc;
-
-        // create a DOM object
-        if (window.ActiveXObject)
-        {
-            try
-            {
-                xmlDoc = new ActiveXObject("Msxml2.DOMDocument.6.0");
-            }
-            catch (e)
-            {
-                try
-                {
-                    xmlDoc = new ActiveXObject("Msxml2.DOMDocument.5.0");
-                }
-                catch (e)
-                {
-                    try
-                    {
-                        xmlDoc = new ActiveXObject("Msxml2.DOMDocument.4.0");
-                    }
-                    catch (e)
-                    {
-                        try
-                        {
-                            xmlDoc = new ActiveXObject("Msxml2.DOMDocument.3.0");
-                        }
-                        catch (e)
-                        {
-                            alert(e.message);
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            if (document.implementation && document.implementation.createDocument)
-            {
-                xmlDoc = document.implementation.createDocument("","doc",null);
-            }
-            else
-            {
-                alert("Create XML object is failed.");
-            }
-        }
-        xmlDoc.async = false;
-
-        return xmlDoc;
-    }
-
 </script>
 
 </body>

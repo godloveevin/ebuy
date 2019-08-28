@@ -47,4 +47,7 @@ class IndexController extends BaseController {
 
     // 服务市场
     public function serverMarket(){}
+
+    // 清楚缓存
+    public function clear_cache(){}
 }

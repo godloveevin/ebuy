@@ -21,3 +21,5 @@ CREATE TABLE `eb_goods_category` (
 登录模块login
 
 前台模块（Home）
+
+##下一个任务JS框架的设计

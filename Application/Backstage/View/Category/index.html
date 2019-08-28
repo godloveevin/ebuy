@@ -6,7 +6,6 @@
     <span id="search_id" class="action-span1">  >   商品分类 </span>
     <div style="clear:both"></div>
 </h1>
-<script type="text/javascript" src="__PUBLIC_BACKSTAGE__/js/listtable.js"></script>
 <form method="post" action="" name="listForm">
     <!-- start ad position list -->
     <div class="list-div" id="listDiv">
@@ -82,6 +81,12 @@
 </block>
 <block name="js">
     <script>
+
+        /**
+         * 删除分类
+         * @param cat_id
+         * @param opt
+         */
         var dels = function(cat_id,opt='确认删除'){
             if(confirm(opt)) {
                 var url = '/Backstage/Category/dels/cat_id/'+cat_id;
@@ -102,5 +107,14 @@
                 },'json');
             }
         }
+
+        /**
+         * 折叠效果
+         */
+
+        /**
+         * 展开效果
+         */
+
     </script>
 </block>

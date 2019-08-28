@@ -15,4 +15,12 @@ use \Think\Controller;
  */
 class LoginController extends Controller {
 
+    //登录操作
+    public function login(){}
+
+    // 执行登录
+    public function doLogin(){}
+
+    // 退出操作
+    public function logout(){}
 }
