@@ -120,7 +120,48 @@ class GoodsController extends BaseController {
         $this->ajaxReturn(array('status'=>1,'msg'=>'ok!'));
     }
 
-    // 商品复制
-    public function copy(){}
+    // 商品编辑
+    public function edit(){
+        if(IS_GET){
+            // 处理分类信息
+            $catInfos = D('Category')->getTreeCatInfo("cat_id,cat_name,parent_id");
+
+            // 处理商品的基本信息
+            $good_id = intval(I('get.good_id'));
+            if(!$good_id) $this->error('编辑有误');
+            $goodInfo = D('Goods')->getGoodInfoById($good_id);
+            if(!$goodInfo) $this->error('编辑有误');
+            // 处理日期时间格式
+            $goodInfo['promote_start_date'] = $goodInfo['promote_start_date']?
+                date('Y-m-d H:i:s',$goodInfo['promote_start_date']):0;
+            $goodInfo['promote_end_date'] = $goodInfo['promote_end_date']?
+                date('Y-m-d H:i:s',$goodInfo['promote_end_date']):0;
+            // 处理扩展分类
+            $goodExtCateIds = M('Goods_category')->where('good_id='.$good_id)->select();
+            if($goodExtCateIds) $goodInfo['goodExtCateIds'] = $goodExtCateIds;
+
+            // 集体赋值给模板
+            $this->assign(array(
+                'catInfos'=>$catInfos,
+                'goodInfo'=>$goodInfo,
+            ));
+            $this->display();
+        }else {
+            // 编辑信息入库
+            $model = D('Goods');
+            // 创建数据
+            $info = $model->create();
+            if(!$info) $this->error($model->getError());
+            // 更新入库
+            $insertId = $model->update($info);
+            if(!$insertId){
+                // 入库失败
+                $this->error($model->getError());
+            }else{
+                // 写入成功
+                $this->success('编辑录入成功',U('index'));
+            }
+        }
+    }
 
 }

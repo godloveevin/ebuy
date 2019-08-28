@@ -23,3 +23,5 @@ CREATE TABLE `eb_goods_category` (
 前台模块（Home）
 
 ##下一个任务JS框架的设计
+
+##商品的修改，与显示

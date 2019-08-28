@@ -1,0 +1,268 @@
+<extend name="Public:base" />
+<block name="main">
+    <!--My97-->
+    <script language="javascript" type="text/javascript" src="__PUBLIC_BACKSTAGE__/js/My97DatePicker/WdatePicker.js"></script>
+    <!--kindeditor-->
+    <script language="javascript" type="text/javascript" src="__PUBLIC_BACKSTAGE__/js/kindeditor/kindeditor-all.js"></script>
+    <script language="javascript" type="text/javascript" src="__PUBLIC_BACKSTAGE__/js/kindeditor/lang/zh-CN.js"></script>
+
+    <h1>
+        <a href="{:U('Goods/index')}" class="btn btn-right btn-add-goods">商品列表</a>
+        <span class="action-span1"><a href="{:U('Index/main')}">EBUY 管理中心</a> </span>
+        <span id="search_id" class="action-span1"> > 编辑商品 </span>
+        <div style="clear:both"></div>
+    </h1>
+    <!-- start goods form -->
+    <div class="tab-div">
+        <!-- tab bar -->
+        <div id="tabbar-div">
+            <p>
+                <span class="tab-front" id="general-tab">通用信息</span>
+                <!--<span class="tab-back" id="detail-tab">详细描述</span>-->
+                <span class="tab-back" id="mix-tab">其他信息</span>
+                <span class="tab-back" id="properties-tab">商品属性</span>
+                <span class="tab-back" id="gallery-tab">商品相册</span>
+            </p>
+        </div>
+
+        <!-- tab body -->
+        <div id="tabbody-div">
+            <form enctype="multipart/form-data" action="" method="post" name="theForm">
+                <input type="hidden" name="good_id" value="{$Think.get.good_id}"/>
+                <input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
+                <!-- 通用信息-->
+                <table width="90%" id="general-table" align="center" class="gk-table">
+                    <tr>
+                        <td class="label">商品名称：</td>
+                        <td>
+                            <input type="text" name="good_name" value="{$goodInfo.good_name}" style="float:left;" size="30" />
+                            <span class="require-field">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">商品货号： </td>
+                        <td><input type="text" name="good_sn" value="{$goodInfo.good_sn}" size="20" />
+                            <span class="notice-span" style="display:block"  id="noticeGoodsSN">如果您不输入商品货号，系统将自动生成一个唯一的货号。</span></td>
+                    </tr>
+                    <tr>
+                        <td class="label">商品分类：</td>
+                        <td>
+                            <select name="cat_id" >
+                                <option value="0">请选择...</option>
+                                <volist name="catInfos" id="catInfo">
+                                    <option value="{$catInfo.cat_id}" <eq name="catInfo.cat_id" value="$goodInfo.cat_id">selected="selected"</eq> >|{$catInfo.level|str_repeat='--',###}{$catInfo.cat_name}</option>
+                                </volist>
+                            </select>
+                            <span class="require-field">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">扩展分类：</td>
+                        <td>
+                            <input type="button" value="添加" id="add_ext_cate"/>
+                            <if condition="$goodInfo.goodExtCateIds neq 0">
+                                <volist name="goodInfo.goodExtCateIds" id="goodExtCateId">
+                                    <select name="e_cat_id[]" >
+                                        <option value="0">请选择...</option>
+                                        <volist name="catInfos" id="catInfo">
+                                            <option value="{$catInfo.cat_id}" <eq name="catInfo.cat_id" value="$goodExtCateId.cat_id">selected="selected"</eq> >|{$catInfo.level|str_repeat='--',###}{$catInfo.cat_name}</option>
+                                        </volist>
+                                    </select>
+                                </volist>
+                            <else />
+                                <select name="e_cat_id[]" >
+                                    <option value="0">请选择...</option>
+                                    <volist name="catInfos" id="catInfo">
+                                        <option value="{$catInfo.cat_id}">|{$catInfo.level|str_repeat='--',###}{$catInfo.cat_name}</option>
+                                    </volist>
+                                </select>
+                            </if>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="label">本店售价：</td>
+                        <td>
+                            <input type="text" name="sale_price" value="{$goodInfo.sale_price}" size="20"/>
+                            <span class="require-field">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">市场售价：</td>
+                        <td><input type="text" name="market_price" value="{$goodInfo.market_price}" size="20" />
+                            <span class="require-field">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">促销价：</td>
+                        <td id="promote_3"><input type="text" id="promote_1" name="promote_price" value="{$goodInfo.promote_price}" size="20" /></td>
+                    </tr>
+                    <tr id="promote_4">
+                        <td class="label" id="promote_5">促销日期：</td>
+                        <td id="promote_6" class="cal-group">
+                            <input class="Wdate" type="text" name="promote_start_date" value="{$goodInfo.promote_start_date}" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})">-
+                            <input class="Wdate" type="text" name="promote_end_date" value="{$goodInfo.promote_end_date}" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">商品主图片：</td>
+                        <td>
+                            <div class="upImg">
+                                <input type="file" name="good_img" size="35" value="{$goodInfo.good_img}"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">排序:</td>
+                        <td>
+                            <input type="text" name='sort_order'  value="{$goodInfo.sort_order}" size="15" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">商品描述:</td>
+                        <td>
+                            <textarea id="editor_id" name="good_desc" style="width:1000px;height:300px;">
+                            {$goodInfo.good_desc}
+                            </textarea>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <!-- 详细描述
+                <table width="90%" id="detail-table" style="display:none">
+                    <tr>
+                        <td><input type="hidden" id="goods_desc" name="goods_desc" value="" style="display:none" /><input type="hidden" id="goods_desc___Config" value="" style="display:none" /><iframe id="goods_desc___Frame" src="../includes/fckeditor/editor/fckeditor.html?InstanceName=goods_desc&amp;Toolbar=Normal" width="100%" height="320" frameborder="0" scrolling="no"></iframe></td>
+                    </tr>
+                </table>
+
+                &lt;!&ndash; 其他信息 &ndash;&gt;
+                <table width="90%" id="mix-table" style="display:none" align="center">
+                    <tr>
+                        <td class="label">商品重量：</td>
+                        <td><input type="text" name="goods_weight" value="" size="20" /> <select name="weight_unit"><option value="1" selected>千克</option><option value="0.001">克</option></select></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><a href="javascript:showNotice('noticeStorage');" title="点击此处查看提示信息"><img src="images/notice.svg" width="16" height="16" border="0" alt="点击此处查看提示信息"></a> 商品库存数量：</td>
+                        &lt;!&ndash;            <td><input type="text" name="goods_number" value="1" size="20"  /><br />&ndash;&gt;
+                        <td><input type="text" name="goods_number" value="1" size="20" /><br />
+                            <span class="notice-span" style="display:block"  id="noticeStorage">库存在商品为虚货或商品存在货品时为不可编辑状态，库存数值取决于其虚货数量或货品数量</span></td>
+                    </tr>
+                    <tr>
+                        <td class="label">库存警告数量：</td>
+                        <td><input type="text" name="warn_number" value="1" size="20" /></td>
+                    </tr>
+                    <tr>
+                        <td class="label">加入推荐：</td>
+                        <td><input type="checkbox" name="is_best" value="1"  />精品 <input type="checkbox" name="is_new" value="1"  />新品 <input type="checkbox" name="is_hot" value="1"  />热销</td>
+                    </tr>
+                    <tr id="alone_sale_1">
+                        <td class="label" id="alone_sale_2">上架：</td>
+                        <td id="alone_sale_3"><input type="checkbox" name="is_on_sale" value="1" checked="checked" /> 打勾表示允许销售，否则不允许销售。</td>
+                    </tr>
+                    <tr>
+                        <td class="label">能作为普通商品销售：</td>
+                        <td><input type="checkbox" name="is_alone_sale" value="1" checked="checked" /> 打勾表示能作为普通商品销售，否则只能作为配件或赠品销售。</td>
+                    </tr>
+                    <tr>
+                        <td class="label">是否为免运费商品</td>
+                        <td><input type="checkbox" name="is_shipping" value="1"  /> 打勾表示此商品不会产生运费花销，否则按照正常运费计算。</td>
+                    </tr>
+                    <tr>
+                        <td class="label">商品关键词：</td>
+                        <td><input type="text" name="keywords" value="" size="40" /> 用空格分隔</td>
+                    </tr>
+                    <tr>
+                        <td class="label">商品简单描述：</td>
+                        <td><textarea name="goods_brief" cols="40" rows="3"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <a href="javascript:showNotice('noticeSellerNote');" title="点击此处查看提示信息"><img src="images/notice.svg" width="16" height="16" border="0" alt="点击此处查看提示信息"></a> 商家备注： </td>
+                        <td><textarea name="seller_note" cols="40" rows="3"></textarea><br />
+                            <span class="notice-span" style="display:block"  id="noticeSellerNote">仅供商家自己看的信息</span></td>
+                    </tr>
+                </table>
+
+                &lt;!&ndash; 商品属性 &ndash;&gt;
+                <table width="90%" id="properties-table" style="display:none" align="center">
+                    <tr>
+                        <td class="label"><a href="javascript:showNotice('noticeGoodsType');" title="点击此处查看提示信息"><img src="images/notice.svg" width="16" height="16" border="0" alt="点击此处查看提示信息"></a>商品类型：</td>
+                        <td>
+                            <select name="goods_type" onchange="getAttrList(0)">
+                                <option value="0">请选择商品类型</option>
+                                <option value='1'>书</option><option value='2'>音乐</option><option value='3'>电影</option><option value='4'>手机</option><option value='5'>笔记本电脑</option><option value='6'>数码相机</option><option value='7'>数码摄像机</option><option value='8'>化妆品</option><option value='9'>精品手机</option>                </select><br />
+                            <span class="notice-span" style="display:block"  id="noticeGoodsType">请选择商品的所属类型，进而完善此商品的属性</span></td>
+                    </tr>
+                    <tr>
+                        <td id="tbody-goodsAttr" colspan="2" style="padding:0"><table width="100%" id="attrTable"></table></td>
+                    </tr>
+                </table>
+
+                &lt;!&ndash; 商品相册 &ndash;&gt;
+                <table width="90%" id="gallery-table" class="aaa" style="display:none" align="center">
+                    &lt;!&ndash; 鍥剧墖鍒楄〃 &ndash;&gt;
+                    <tr>
+                        <td class="up-title">上传商品图片：</td>
+                        <td>
+                            <div class="upload-ul clearfix">
+                                <input type="hidden" name="img_sn">
+                                <ul class="pic-list">
+                                </ul>
+                                <div class="upload-pick list">
+                                    <div class="webuploader-container clearfix" id="goodsUpload"></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr><td>&nbsp;</td></tr>
+                    &lt;!&ndash; 涓婁紶鍥剧墖 &ndash;&gt;
+                    <tr>
+                        <td>
+                            &lt;!&ndash; <a href="javascript:;" onclick="addImg(this)">[+]</a>
+                            图片描述 <input type="text" name="img_desc[]" size="20" />
+                            上传文件 <input type="file" name="img_url[]" />
+                            <input type="text" size="40" value="或者输入外部图片链接地址" style="color:#aaa;" onfocus="if (this.value == '或者输入外部图片链接地址'){this.value='http://';this.style.color='#000';}" name="img_file[]"/> &ndash;&gt;
+                            &lt;!&ndash; <input type="file" name="img_file[]" accept="image/jpg,image/png,image/gif" multiple="multiple" > &ndash;&gt;
+                        </td>
+                    </tr>
+                </table>-->
+
+                <div class="button-div">
+                    <input type="submit" value=" 确定 " class="button" />
+                    <input type="reset" value=" 重置 " class="button" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- end goods form -->
+
+</block>
+
+<block name="js">
+
+    <script>
+
+        /**
+         * 初始化富文本编辑器
+         */
+        KindEditor.ready(function(K) {
+            window.editor = K.create('#editor_id');
+        });
+
+        /**
+         * 标签页切换
+         */
+
+        /**
+         * 新增扩展分类
+         */
+        $('#add_ext_cate').click(function(){
+            var selectElement = $(this).next().clone();
+            $(this).parent().append(selectElement);
+        });
+
+
+    </script>
+
+</block>
