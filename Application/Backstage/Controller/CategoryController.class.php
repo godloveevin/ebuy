@@ -79,7 +79,7 @@ class CategoryController extends BaseController{
 
     // ajax删除删除分类信息
     public function dels(){
-        $cat_id = $_GET['cat_id'];
+        $cat_id = I('get.cat_id');
         if(!$cat_id){
             $this->ajaxReturn(array('status'=>0,'msg'=>'删除失败'));
         }

@@ -97,8 +97,8 @@
                         <img src="__PUBLIC_BACKSTAGE__/images/icon_view.gif" width="16" height="16" border="0"></a>
                     <a href="{:U('edit','good_id='.$goodInfo['good_id'])}" title="编辑">
                         <img src="__PUBLIC_BACKSTAGE__/images/icon_edit.gif" width="16" height="16" border="0"></a>
-                    <a href="{:U('copy','good_id='.$goodInfo['good_id'])}" title="复制">
-                        <img src="__PUBLIC_BACKSTAGE__/images/icon_copy.gif" width="16" height="16" border="0"></a>
+                    <!--<a href="{:U('copy','good_id='.$goodInfo['good_id'])}" title="复制">
+                        <img src="__PUBLIC_BACKSTAGE__/images/icon_copy.gif" width="16" height="16" border="0"></a>-->
                     <a href="javascript:" onclick="trash({$goodInfo.good_id}, '您确实要把该商品放入回收站吗？')" title="回收站">
                         <img src="__PUBLIC_BACKSTAGE__/images/icon_trash.gif" width="16" height="16" border="0"></a>
                 </td>
@@ -130,8 +130,25 @@
 
 <block name="js">
     <script>
-        function trash(id,msg){
-            // console.log(id);
+        var trash = function(good_id,opt='确认'){
+            if(confirm(opt)) {
+                var url = '/Backstage/Goods/trash/good_id/'+good_id;
+                $.get(url, function (data) {
+                    var load_div = parent.frames['header-frame'].document.getElementById('load-div');
+                    load_div.style.display = '';
+                    if(data.status == 1){
+                        load_div.style.color = '#2b9bde';
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                    }else{
+                        load_div.style.color = '#FF9900';
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                    }
+                    setTimeout(function () {
+                        load_div.style.display = 'none';
+                        if(data.status == 1) location.reload();
+                    },1000);
+                },'json');
+            }
         }
     </script>
 </block>

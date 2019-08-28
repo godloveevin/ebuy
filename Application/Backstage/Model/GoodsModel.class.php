@@ -154,4 +154,9 @@ class GoodsModel extends BaseModel {
         );
     }
 
+    // 回收商品
+    public function trashGoodById($good_id){
+        return $this->where("good_id=$good_id")->setField('is_del',1);
+    }
+
 }

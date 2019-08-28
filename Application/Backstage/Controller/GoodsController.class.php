@@ -28,7 +28,19 @@ class GoodsController extends BaseController {
                 foreach ($sub_cat_ids as $k=>$v) {
                     $cat_ids[] = $v['cat_id'];
                 }
-                $where['cat_id'] = array('in',$cat_ids);
+
+                // 根据扩展分类获取符合条件的商品id集
+                $good_cate_infos = M('goods_category')->group('good_id')
+                    ->where(array('cat_id'=>array('in',$cat_ids)))->select();
+                if($good_cate_infos){
+                    foreach ($good_cate_infos as $k=>$v) $good_cate_ids[] = $v['good_id'];
+                    $condition['good_id'] = array('in',$good_cate_ids);
+                    $condition['cat_id'] = array('in',$cat_ids);
+                    $condition['_logic'] = 'or';
+                    $where['_complex'] = $condition;
+                }else{
+                    $where['cat_id'] = array('in',$cat_ids);
+                }
             }
 
             // 处理推荐类型搜索条件
@@ -95,8 +107,18 @@ class GoodsController extends BaseController {
     // 商品品牌
     public function brand(){}
 
-    // 商品回收站
-    public function trash(){}
+    // 商品回收站，ajax删除
+    public function trash(){
+        $good_id = I('get.good_id');
+        if(!$good_id){
+            $this->ajaxReturn(array('status'=>0,'msg'=>'回收失败'));
+        }
+        // 回收商品逻辑，伪删除
+        $model = D('Goods');
+        if(!$model->trashGoodById($good_id))
+            $this->ajaxReturn(array('status'=>0,'msg'=>'回收失败，系统错误'));
+        $this->ajaxReturn(array('status'=>1,'msg'=>'ok!'));
+    }
 
     // 商品复制
     public function copy(){}
