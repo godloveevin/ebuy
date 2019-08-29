@@ -97,9 +97,7 @@ class GoodsController extends BaseController {
     }
 
     // 测试方法
-    function test(){
-
-    }
+    function test(){}
 
     // 商品类型
     public function type(){}
@@ -107,8 +105,8 @@ class GoodsController extends BaseController {
     // 商品品牌
     public function brand(){}
 
-    // 商品回收站，ajax删除
-    public function trash(){
+    // 商品进入回收站，ajax回收
+    public function goToTrash(){
         $good_id = I('get.good_id');
         if(!$good_id){
             $this->ajaxReturn(array('status'=>0,'msg'=>'回收失败'));
@@ -162,6 +160,85 @@ class GoodsController extends BaseController {
                 $this->success('编辑录入成功',U('index'));
             }
         }
+    }
+
+    // 回收站列表页
+    public function trashList(){
+        // 组装搜索条件
+        $where = array();
+        if(IS_POST){
+            // 处理分类搜索条件
+            $cat_id = I('post.cat_id');
+            if(!empty($cat_id)){
+                // 组装分类id
+                $cat_ids[] = $cat_id; // 本分类
+                // 组装本分类下的子分类
+                $sub_cat_ids = D('Category')->getTreeCatInfoNoCached("cat_id,cat_name,parent_id",$cat_id);
+                foreach ($sub_cat_ids as $k=>$v) {
+                    $cat_ids[] = $v['cat_id'];
+                }
+
+                // 根据扩展分类获取符合条件的商品id集
+                $good_cate_infos = M('goods_category')->group('good_id')
+                    ->where(array('cat_id'=>array('in',$cat_ids)))->select();
+                if($good_cate_infos){
+                    foreach ($good_cate_infos as $k=>$v) $good_cate_ids[] = $v['good_id'];
+                    $condition['good_id'] = array('in',$good_cate_ids);
+                    $condition['cat_id'] = array('in',$cat_ids);
+                    $condition['_logic'] = 'or';
+                    $where['_complex'] = $condition;
+                }else{
+                    $where['cat_id'] = array('in',$cat_ids);
+                }
+            }
+
+            // 处理推荐类型搜索条件
+            $intro_type = I('post.intro_type');
+            if(!empty($intro_type)) $where[$intro_type] = 1;
+
+            // 处理上下架搜索条件
+            $is_sale = I('post.is_sale');
+            if(isset($is_sale) && ($is_sale!=null)) $where['is_sale'] = $is_sale;
+
+            // 处理关键字搜索条件
+            $keywords = I('post.keyword');
+            if(!empty($keywords)){
+                // 单个词的搜索
+                $where['good_name'] = array('like','%'.$keywords.'%');
+            }
+        }
+        // 获取分类信息并赋值给模板
+        $catInfos = D('Category')->getTreeCatInfo("cat_id,cat_name,parent_id");
+        $goodInfos = D('Goods')->getGoodsInfoList($where,true);
+        $this->assign(array(
+            'catInfos' => $catInfos,
+            'goodInfos' => $goodInfos['data'],
+            'pageInfo'=>$goodInfos['pageInfo'],
+        ));
+        $this->display();
+    }
+
+    // 商品还原，ajax回收
+    public function recover(){
+        $good_id = I('get.good_id');
+        if(!$good_id){
+            $this->ajaxReturn(array('status'=>0,'msg'=>'还原失败'));
+        }
+        // 还原商品
+        $model = D('Goods');
+        if(!$model->trashGoodById($good_id,0))
+            $this->ajaxReturn(array('status'=>0,'msg'=>'还原失败，系统错误'));
+        $this->ajaxReturn(array('status'=>1,'msg'=>'ok!'));
+    }
+
+    // 彻底删除商品
+    public function drop(){
+        $good_id = intval(I('get.good_id'));
+        if(!$good_id){
+            $this->ajaxReturn(array('status'=>0,'msg'=>'删除失败'));
+        }
+        $res = D('Goods')->drop($good_id);
+        $this->ajaxReturn($res);
     }
 
 }

@@ -130,7 +130,7 @@
     <script>
         var trash = function(good_id,opt='确认'){
             if(confirm(opt)) {
-                var url = '/Backstage/Goods/trash/good_id/'+good_id;
+                var url = '/Backstage/Goods/goToTrash/good_id/'+good_id;
                 $.get(url, function (data) {
                     var load_div = parent.frames['header-frame'].document.getElementById('load-div');
                     load_div.style.display = '';

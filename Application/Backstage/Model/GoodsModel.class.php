@@ -54,27 +54,11 @@ class GoodsModel extends BaseModel {
         $data['promote_start_date'] = strtotime($data['promote_start_date']);
         $data['promote_end_date'] = strtotime($data['promote_end_date']);
 
-        // 实现图片上传
-        $fileImg = $_FILES['good_img'];
-        if($fileImg['error'] === 4){
-            // 没上传图片
-            $this->error = '请你先上传商品主图';
-            return false;
-        }else{
-            $upload = new \Think\Upload();
-            $info = $upload->uploadOne($fileImg);
-            if (!$info) {
-                $this->error = $upload->getError();
-            }
-            $data['good_img'] = 'Uploads/' . $info['savepath'] . $info['savename'];
-
-            // 制作缩略图
-            $image = new \Think\Image();
-            // 打开图片
-            $image->open($data['good_img']);
-            // 保存缩略图
-            $data['good_thumb'] = 'Uploads/' . $info['savepath'] . 'thumb_' . $info['savename'];
-            $image->thumb(400, 400)->save($data['good_thumb']);
+        // 处理图片上传问题
+        $res = $this->uploadImg();
+        if($res){
+            $data['good_img'] = $res['good_img'];
+            $data['good_thumb'] = $res['good_thumb'];
         }
     }
 
@@ -96,29 +80,38 @@ class GoodsModel extends BaseModel {
     }
 
     // 根据刷选条件获取商品列表数据
-    public function getGoodsInfoList($condition=array()){
+    public function getGoodsInfoList($condition=array(),$is_trashed=false){
         $where = $condition;
-        // 默认获取没有被删除的商品
-        $where['is_del'] = 0;
+        if($is_trashed){
+            $where['is_del'] = 1;
+        }else{
+            // 默认获取没有被删除的商品
+            $where['is_del'] = 0;
+        }
         // 处理分页
-        $pageData = $this->_getPageData($where);
+        $pageData = $this->_getPageData($where,$is_trashed);
         // 获取数据
         $data = $this->where($where)->page($pageData['curPage'],$pageData['pageSize'])->select();
         return array('pageInfo'=>$pageData,'data'=>$data);
     }
 
     // 获取总记录数
-    public function getTotal($where=''){
-        $where['is_del'] = 0;
+    private function _getTotal($where='',$is_trashed=false){
+        if($is_trashed){
+            $where['is_del'] = 1;
+        }else{
+            $where['is_del'] = 0;
+        }
+
         $res = $this->where($where)->count();
         return $res;
     }
 
     // 获取分页数据
-    private function _getPageData($where=''){
+    private function _getPageData($where='',$is_trashed=false){
         // 处理分页条件
         $cur_page = I('get.p',1);//当前页，默认取
-        $total = $this->getTotal($where);// 总记录数
+        $total = $this->_getTotal($where,$is_trashed);// 总记录数
         $page_size = C('PAGE_SIZE');//每页显示的条目数
         $total_pages = ceil($total/$page_size);//总页数
         // 组装页码url
@@ -147,9 +140,9 @@ class GoodsModel extends BaseModel {
         );
     }
 
-    // 回收商品
-    public function trashGoodById($good_id){
-        return $this->where("good_id=$good_id")->setField('is_del',1);
+    // 回收商品以及还原商品
+    public function trashGoodById($good_id,$is_del=1){
+        return $this->where("good_id=$good_id")->setField('is_del',$is_del);
     }
 
     /**
@@ -192,7 +185,7 @@ class GoodsModel extends BaseModel {
         $res = $this->uploadImg();
         if($res){
             $data['good_img'] = $res['good_img'];
-            $data['thumb_img'] = $res['thumb_img'];
+            $data['good_thumb'] = $res['good_thumb'];
         }
         return $this->save($data);
     }
@@ -219,8 +212,32 @@ class GoodsModel extends BaseModel {
             // 保存缩略图
             $thumb_img = 'Uploads/' . $info['savepath'] . 'thumb_' . $info['savename'];
             $image->thumb(400, 400)->save($thumb_img);
-            return array('good_img'=>$good_img,'thumb_img'=>$thumb_img);
+            return array('good_img'=>$good_img,'good_thumb'=>$thumb_img);
         }
+    }
+
+    /**
+     * 彻底删除商品
+     * @param $good_id
+     * @return array
+     */
+    public function drop($good_id){
+        $goodInfo = $this->where('good_id='.$good_id)->find();
+        if(!$goodInfo) return array('status'=>0,'msg'=>'系统异常');
+        // 处理图片删除
+        unlink($goodInfo['good_img']);
+        unlink($goodInfo['good_thumb']);
+        // 处理扩展分类删除
+        $res = D('GoodsCategory')->where('good_id='.$good_id)->delete();
+        if($res === false){
+            return array('status'=>0,'msg'=>'删除扩展分类失败');
+        }
+        // 商品自身信息删除
+        $res = $this->where('good_id='.$good_id)->delete();
+        if($res === false){
+            return array('status'=>0,'msg'=>'删除商品失败');
+        }
+        return array('status'=>1,'msg'=>'ok');
     }
 
 }

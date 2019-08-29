@@ -1,0 +1,170 @@
+<extend name="Public:base" />
+<block name="main">
+    <h1>
+        <span class="action-span1"><a href="{:U('Index/main')}">EBUY 管理中心</a> </span>
+        <span id="search_id" class="action-span1"> > 回收站商品列表 </span>
+        <div style="clear:both"></div>
+    </h1>
+    <!-- 商品搜索 -->
+    <div class="form-div">
+        <form action="" method="post">
+            <!-- 分类 -->
+            商品分类
+            <select name="cat_id">
+                <option value="0" checked >所有分类</option>
+                <volist name="catInfos" id="catInfo">
+                    <option value="{$catInfo.cat_id}" <eq name="Think.post.cat_id" value="$catInfo.cat_id">selected</eq> >|{$catInfo.level|str_repeat='--',###}{$catInfo.cat_name}</option>
+                </volist>
+            </select>
+            <!-- 推荐 -->
+            推荐类别
+            <select name="intro_type">
+                <option value="0">全部</option>
+                <option value="is_rec" <eq name="Think.post.intro_type" value="is_rec">selected</eq> >推荐</option>
+                <option value="is_new" <eq name="Think.post.intro_type" value="is_new">selected</eq> >新品</option>
+                <option value="is_hot" <eq name="Think.post.intro_type" value="is_hot">selected</eq> >热销</option>
+            </select>
+            <!-- 上架 -->
+            上架状态
+            <input type="radio" name="is_sale" value="1" <eq name="Think.post.is_sale" value="1">checked</eq> > 上架
+            <input type="radio" name="is_sale" value="0" <eq name="Think.post.is_sale" value="0">checked</eq>> 下架
+            <!-- 关键字 -->
+            关键字
+            <input type="text" name="keyword" size="25" value="{$Think.post.keyword}"/>
+            <button type="submit" class="btn"> 搜索 </button>
+        </form>
+    </div>
+
+    <!-- 商品列表 -->
+    <form method="post" action="" name="listForm">
+        <!-- start goods list -->
+        <div class="list-div" id="listDiv">
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th class="checks"><input type="checkbox"></th>
+                    <th><a href="">编号</a><img src="__PUBLIC_BACKSTAGE__/images/sort_desc.png"/></th>
+                    <th><a href="">商品名称</a></th>
+                    <th><a href="">货号</a></th>
+                    <th><a href="">价格</a></th>
+                    <th><a href="">是否上架</a></th>
+                    <th><a href="">热销</a></th>
+                    <th><a href="">新品</a></th>
+                    <th><a href="">推荐</a></th>
+                    <th><a href="">排序</a></th>
+                    <th><a href="">库存</a></th>
+                    <th>操作</th>
+                </tr>
+                <volist name="goodInfos" id="goodInfo">
+                    <tr>
+                        <td><input type="checkbox" name="checkboxes[]" value="{$goodInfo.good_id}"></td>
+                        <td>{$goodInfo.good_id}</td>
+                        <td class="first-cell" style="width:400px;overflow: hidden;"><span>{$goodInfo.good_name}</span></td>
+                        <td><span>{$goodInfo.good_sn}</span></td>
+                        <td align="right"><span>{$goodInfo.sale_price}</span></td>
+                        <td align="center">
+                            <if condition="$goodInfo.is_sale eq 1">
+                                <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" />
+                                <else />
+                                <img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="20" />
+                            </if>
+                        </td>
+                        <td align="center">
+                            <if condition="$goodInfo.is_hot eq 1">
+                                <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" />
+                                <else />
+                                <img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="20" />
+                            </if>
+                        </td>
+                        <td align="center">
+                            <if condition="$goodInfo.is_new eq 1">
+                                <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" />
+                                <else />
+                                <img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="20" />
+                            </if>
+                        </td>
+                        <td align="center">
+                            <if condition="$goodInfo.is_rec eq 1">
+                                <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20" />
+                                <else />
+                                <img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="20" />
+                            </if>
+                        </td>
+                        <td align="center"><span>{$goodInfo.sort_order}</span></td>
+                        <td align="right"><span>20000</span></td>
+                        <td align="center">
+                            <a href="javascript:" onclick="recover({$goodInfo.good_id}, '您确实要把该商品还原吗？')" title="还原">
+                                <img src="__PUBLIC_BACKSTAGE__/images/icon_output.gif" width="16" height="16" border="0"></a>
+                            <a href="javascript:" onclick="drop({$goodInfo.good_id}, '您确实要把该商品彻底删除吗？')" title="删除">
+                                <img src="__PUBLIC_BACKSTAGE__/images/icon_drop.gif" width="16" height="16" border="0"></a>
+                        </td>
+                    </tr>
+                </volist>
+            </table>
+            <!-- end goods list -->
+
+            <!-- 分页 -->
+            <table id="page-table" cellspacing="0">
+                <tr>
+                    <td align="right" nowrap="true">
+                        <div id="turn-page">
+                            <span id="pageCurrent" style="color:#41a5e1;">{$pageInfo.curPage}</span> / <span id="totalPages" style="color:#41a5e1;">{$pageInfo.totalPages}</span>
+                            页，每页显示<span style="color:#41a5e1;">{$pageInfo.pageSize}</span>条记录，总共 <span id="totalRecords" style="color:#41a5e1;">{$pageInfo.total}</span>条记录
+                            <span id="page-link">
+                        <a href="{$pageInfo.firstPageUrl}">首页</a>
+                        <neq name="pageInfo.prevPageUrl" value="0"><a href="{$pageInfo.prevPageUrl}">上一页</a></neq>
+                        <neq name="pageInfo.nextPageUrl" value="0"><a href="{$pageInfo.nextPageUrl}">下一页</a></neq>
+                        <a href="{$pageInfo.lastPageUrl}">尾页</a>
+                      </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</block>
+
+<block name="js">
+    <script>
+        var recover = function(good_id,opt='确认'){
+            if(confirm(opt)) {
+                var url = '/Backstage/Goods/recover/good_id/'+good_id;
+                $.get(url, function (data) {
+                    var load_div = parent.frames['header-frame'].document.getElementById('load-div');
+                    load_div.style.display = '';
+                    if(data.status == 1){
+                        load_div.style.color = '#2b9bde';
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                    }else{
+                        load_div.style.color = '#FF9900';
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                    }
+                    setTimeout(function () {
+                        load_div.style.display = 'none';
+                        if(data.status == 1) location.reload();
+                    },1000);
+                },'json');
+            }
+        };
+
+        var drop = function(good_id,opt='确认'){
+            if(confirm(opt)) {
+                var url = '/Backstage/Goods/drop/good_id/' + good_id;
+                $.get(url, function (data) {
+                    var load_div = parent.frames['header-frame'].document.getElementById('load-div');
+                    load_div.style.display = '';
+                    if(data.status == 1){
+                        load_div.style.color = '#2b9bde';
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                    }else{
+                        load_div.style.color = '#FF9900';
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                    }
+                    setTimeout(function () {
+                        load_div.style.display = 'none';
+                        if(data.status == 1) location.reload();
+                    },1000);
+                },'json');
+            }
+        }
+    </script>
+</block>
