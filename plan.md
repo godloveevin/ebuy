@@ -70,6 +70,50 @@ CREATE TABLE `eb_goods_category` (
 
 ##商品回收站功能 ok
 
+###权限控制模块RBAC
+####用户表
+CREATE TABLE `eb_admin` (
+  `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `user_name` varchar(60) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '用户名',
+  `email` varchar(60) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '邮箱',
+  `password` varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '密码',
+  `eb_salt` varchar(10) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '加密的盐值',
+  `last_login_time` int(11) NOT NULL DEFAULT '0' COMMENT '最后登录时间',
+  `last_login_ip` varchar(15) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '最后登录ip',
+  `role_id` int(11) NOT NULL COMMENT '用户所属角色id',
+  `addtime` int(11) NOT NULL COMMENT '用户录入时间',
+  `updatetime` int(11) NOT NULL COMMENT '更新用户数据时间',
+  PRIMARY KEY (`user_id`) USING BTREE,
+  KEY `user_name` (`user_name`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='管理员用户表';
+####角色表
+CREATE TABLE `eb_role` (
+  `role_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `role_name` varchar(60) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '角色名称',
+  `action_list` text CHARACTER SET utf8mb4 NOT NULL COMMENT '角色操作集',
+  `access_ids` text CHARACTER SET utf8mb4 NOT NULL COMMENT '权限id集',
+  `role_describe` text NOT NULL COMMENT '角色描述',
+  `addtime` int(11) NOT NULL COMMENT '角色录入时间',
+  PRIMARY KEY (`role_id`) USING BTREE,
+  KEY `user_name` (`role_name`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色表';
+###权限表
+CREATE TABLE `eb_access` (
+  `access_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '权限id',
+  `parent_id` int(11) NOT NULL COMMENT '权限父id',
+  `access_name` varchar(20) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '权限名称',
+  `access_string` varchar(100) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '权限字符串形式',
+  `access_mode` varchar(20) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '模块名',
+  `access_controller` varchar(20) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '控制器名',
+  `access_action` varchar(20) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '动作名',
+  `addtime` int(11) NOT NULL DEFAULT '0' COMMENT '权限录入时间',
+  `is_show` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否显示，1显示，0不显示，默认1',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态，1正常，0删除，默认1',
+  PRIMARY KEY (`access_id`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='权限表';
+
+
+
 
 
 

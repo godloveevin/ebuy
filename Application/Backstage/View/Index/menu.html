@@ -17,47 +17,33 @@
         <div id="menu-list">
             <ul class="menu" id="menu-ul">
 
-                <li key="02_cat_and_goods" class="icon-goods" data-url="{:U('Goods/index')}" data-key="01_goods_list" name="menu" onclick="showsub(this)">
+                <li class="icon-goods" data-url="{:U('Goods/index')}" data-key="good-sindex" onclick="showsub(this)">
                     商品管理
                     <div class="submenu">
                         <div class="title">商品管理</div>
                         <ul>
-                            <li id="sub-menu-01_goods_list" class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/index')}" target="main-frame">商品列表</a></li>
-                            <li id="sub-menu-02_goods_add" class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/add')}" target="main-frame">添加新商品</a></li>
-                            <li id="sub-menu-03_category_list" class="menu-item" onclick="showact(this, event)"><a href="{:U('Category/index')}" target="main-frame">商品分类</a></li>
-                            <li id="sub-menu-05_comment_manage" class="menu-item" onclick="showact(this, event)"><a href="{:U('comment/index')}" target="main-frame">用户评论</a></li>
-                            <li id="sub-menu-06_goods_brand_list" class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/brand')}" target="main-frame">商品品牌</a></li>
-                            <li id="sub-menu-08_goods_type" class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/type')}" target="main-frame">商品类型</a></li>
-                            <li id="sub-menu-11_goods_trash" class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/trashList')}" target="main-frame">商品回收站</a></li>
+                            <li id="good-sindex" class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/index')}" target="main-frame">商品列表</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/add')}" target="main-frame">添加新商品</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Category/index')}" target="main-frame">商品分类</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('comment/index')}" target="main-frame">用户评论</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/brand')}" target="main-frame">商品品牌</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/type')}" target="main-frame">商品类型</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/trashList')}" target="main-frame">商品回收站</a></li>
                         </ul>
                     </div>
                 </li>
 
-                <li key="08_members" class="icon-members" data-url="{:U('User/index')}" data-key="03_users_list" name="menu" onclick="showsub(this)">
-                    用户管理
-                    <div class="submenu">
-                        <div class="title">用户管理</div>
-                        <ul>
-                            <li id="sub-menu-03_users_list" class="menu-item" onclick="showact(this, event)"><a href="{:U('User/index')}" target="main-frame">用户列表</a></li>
-                            <li id="sub-menu-04_users_add" class="menu-item" onclick="showact(this, event)"><a href="{:U('User/add')}" target="main-frame">添加会员</a></li>
-                            <li id="sub-menu-05_user_rank_list" class="menu-item" onclick="showact(this, event)"><a href="user_rank.php?act=list" target="main-frame">会员等级</a></li>
-                            <li id="sub-menu-06_list_integrate" class="menu-item" onclick="showact(this, event)"><a href="integrate.php?act=list" target="main-frame">会员整合</a></li>
-                            <li id="sub-menu-08_unreply_msg" class="menu-item" onclick="showact(this, event)"><a href="user_msg.php?act=list_all" target="main-frame">会员留言</a></li>
-                            <li id="sub-menu-09_user_account" class="menu-item" onclick="showact(this, event)"><a href="user_account.php?act=list" target="main-frame">充值和提现申请</a></li>
-                            <li id="sub-menu-10_user_account_manage" class="menu-item" onclick="showact(this, event)"><a href="user_account_manage.php?act=list" target="main-frame">资金管理</a></li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li key="10_priv_admin" class="icon-priv" data-url="{:U('Access/index')}" data-key="admin_list" name="menu" onclick="showsub(this)">
+                <li class="icon-priv" data-url="{:U('User/index')}" data-key="user-index" onclick="showsub(this)">
                     权限管理
                     <div class="submenu">
                         <div class="title">权限管理</div>
                         <ul>
-                            <li id="sub-menu-admin_list" class="menu-item" onclick="showact(this, event)"><a href="{:U('Access/index')}" target="main-frame">权限列表</a></li>
-                            <li id="sub-menu-admin_logs" class="menu-item" onclick="showact(this, event)"><a href="{:U('Access/add')}" target="main-frame">添加权限</a></li>
-                            <li id="sub-menu-admin_role" class="menu-item" onclick="showact(this, event)"><a href="{:U('Role/index')}" target="main-frame">角色管理</a></li>
-                            <li id="sub-menu-agency_list" class="menu-item" onclick="showact(this, event)"><a href="{:U('Role/add')}" target="main-frame">添加角色</a></li>
+                            <li id="user-index" class="menu-item" onclick="showact(this, event)"><a href="{:U('User/index')}" target="main-frame">管理员列表</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('User/add')}" target="main-frame">添加管理员</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Access/index')}" target="main-frame">权限列表</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Access/add')}" target="main-frame">添加权限</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Role/index')}" target="main-frame">角色管理</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Role/add')}" target="main-frame">添加角色</a></li>
                         </ul>
                     </div>
                 </li>
@@ -122,7 +108,7 @@
         top.document.getElementById('frame-body').cols = '240,*';
         if (url) {
             top.document.getElementById('main-frame').src=url;
-            document.getElementById('sub-menu-'+key).className = 'menu-item active';
+            document.getElementById(key).className = 'menu-item active';
         }
     }
     function showact(el, e) {

@@ -80,64 +80,19 @@ class GoodsModel extends BaseModel {
     }
 
     // 根据刷选条件获取商品列表数据
-    public function getGoodsInfoList($condition=array(),$is_trashed=false){
+    public function getGoodsInfoList($condition=array(),$is_del=false){
         $where = $condition;
-        if($is_trashed){
+        if($is_del){
             $where['is_del'] = 1;
         }else{
             // 默认获取没有被删除的商品
             $where['is_del'] = 0;
         }
         // 处理分页
-        $pageData = $this->_getPageData($where,$is_trashed);
+        $pageData = $this->getPageData($where);
         // 获取数据
         $data = $this->where($where)->page($pageData['curPage'],$pageData['pageSize'])->select();
         return array('pageInfo'=>$pageData,'data'=>$data);
-    }
-
-    // 获取总记录数
-    private function _getTotal($where='',$is_trashed=false){
-        if($is_trashed){
-            $where['is_del'] = 1;
-        }else{
-            $where['is_del'] = 0;
-        }
-
-        $res = $this->where($where)->count();
-        return $res;
-    }
-
-    // 获取分页数据
-    private function _getPageData($where='',$is_trashed=false){
-        // 处理分页条件
-        $cur_page = I('get.p',1);//当前页，默认取
-        $total = $this->_getTotal($where,$is_trashed);// 总记录数
-        $page_size = C('PAGE_SIZE');//每页显示的条目数
-        $total_pages = ceil($total/$page_size);//总页数
-        // 组装页码url
-        $firstPageUrl = U(ACTION_NAME,'p=1'); // 首页
-        $lastPageUrl = U(ACTION_NAME,'p='.$total_pages); // 尾页
-        if(($cur_page > 1) && ($cur_page <= $total_pages)) {
-            $prevPageUrl = U(ACTION_NAME,'p='.($cur_page-1));
-        }else{
-            $prevPageUrl = 0;
-        }//上一页
-        if(($cur_page >= 1) && ($cur_page < $total_pages)){
-            $nextPageUrl = U(ACTION_NAME,'p='.($cur_page+1));
-        }else{
-            $nextPageUrl = 0;
-        }//下一页
-
-        return array(
-            'curPage' => $cur_page,
-            'total'=> $total,
-            'pageSize'=>$page_size,
-            'totalPages' => $total_pages,
-            'firstPageUrl'=>$firstPageUrl,
-            'lastPageUrl'=>$lastPageUrl,
-            'prevPageUrl'=>$prevPageUrl,
-            'nextPageUrl'=>$nextPageUrl,
-        );
     }
 
     // 回收商品以及还原商品
@@ -147,7 +102,7 @@ class GoodsModel extends BaseModel {
 
     /**
      * 根据商品id获取商品信息
-     * @param $good_id 商品id
+     * @param $good_id int 商品id
      * @return mixed
      */
     public function getGoodInfoById($good_id){
@@ -190,6 +145,9 @@ class GoodsModel extends BaseModel {
         return $this->save($data);
     }
 
+    /**
+     * @return array|bool
+     */
     public function uploadImg(){
         // 实现图片上传
         $fileImg = $_FILES['good_img'];
@@ -218,26 +176,37 @@ class GoodsModel extends BaseModel {
 
     /**
      * 彻底删除商品
-     * @param $good_id
+     * @param $good_id integer
      * @return array
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function drop($good_id){
+        $result = array('status'=>1,'msg'=>'ok');
         $goodInfo = $this->where('good_id='.$good_id)->find();
-        if(!$goodInfo) return array('status'=>0,'msg'=>'系统异常');
+        if(!$goodInfo) {
+            $result['status'] = 0;
+            $result['msg'] = '系统异常';
+            return $result;
+        }
         // 处理图片删除
         unlink($goodInfo['good_img']);
         unlink($goodInfo['good_thumb']);
         // 处理扩展分类删除
         $res = D('GoodsCategory')->where('good_id='.$good_id)->delete();
         if($res === false){
-            return array('status'=>0,'msg'=>'删除扩展分类失败');
+            $result['status'] = 0;
+            $result['msg'] = '删除扩展分类失败';
+            return $result;
         }
         // 商品自身信息删除
         $res = $this->where('good_id='.$good_id)->delete();
         if($res === false){
-            return array('status'=>0,'msg'=>'删除商品失败');
+            $result['status'] = 0;
+            $result['msg'] = '删除商品失败';
+            return $result;
         }
-        return array('status'=>1,'msg'=>'ok');
+        return $result;
     }
 
 }

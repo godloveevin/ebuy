@@ -9,7 +9,7 @@
 namespace Backstage\Model;
 
 /**
- * Class AcessModel
+ * Class AccessModel
  * 定义后台权限模型类
  * @package Backstage\Model
  */
