@@ -36,7 +36,7 @@
                     <tr>
                         <td class="label">所属角色：</td>
                         <td>
-                            <select name="role_id">
+                            <select name="role_id" style="width:165px;">
                                 <option value="0">请选择...</option>
                                 <volist name="roleInfos" id="roleInfo">
                                     <option value="{$roleInfo.role_id}" <eq name="roleInfo.role_id" value="$adminInfo.role_id">selected</eq> >{$roleInfo.role_name}</option>
@@ -47,7 +47,7 @@
                     <tr>
                         <td class="label">排序:</td>
                         <td>
-                            <input type="text" name='sort_order'  value="{$adminInfo.sort_order}" size="15" />
+                            <input type="text" name='sort_order'  value="{$adminInfo.sort_order}" size="20" />
                         </td>
                     </tr>
                 </table>

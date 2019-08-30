@@ -23,7 +23,7 @@
             </tr>
             <foreach name="cat_Info" item="cat">
             <tr align="center" class="{$cat.level}" id="{$cat.level}_{$cat.cat_id}">
-                <td width="2%">{$cat.cat_id}</td>
+                <td width="5%">{$cat.cat_id}</td>
                 <td align="left" class="first-cell" >
                     <if condition="$cat.is_leaf neq 1">
                     <img src="__PUBLIC_BACKSTAGE__/images/menu_minus.gif" id="icon_{$cat.level}_{$cat.cat_id}" width="9" height="9" border="0" style="margin-left:{$cat.step}em;background-color:#000080;color:#000080;" onclick="rowClicked(this)" />
@@ -67,10 +67,11 @@
                     </if>
                 </td>
                 <td width="10%" align="right"><span>{$cat.sort_order}</span></td>
-                <td width="24%" align="center">
-                    <a href="category.php?act=move&cat_id={$cat.cat_id}">转移商品</a> |
-                    <a href="{:U('edit','cat_id='.$cat['cat_id'])}">编辑</a> |
-                    <a href="javascript:" onclick="dels({$cat.cat_id}, '确认删除')" title="删除">删除</a>
+                <td width="8%" align="center">
+                    <a href="{:U('edit','cat_id='.$cat['cat_id'])}">
+                        <img src="__PUBLIC_BACKSTAGE__/images/icon_edit.gif" width="16" height="16" border="0"></a>
+                    <a href="javascript:" onclick="dels({$cat.cat_id}, '确认删除')" title="删除">
+                        <img src="__PUBLIC_BACKSTAGE__/images/icon_drop.gif" width="16" height="16" border="0"></a>
                 </td>
             </tr>
             </foreach>

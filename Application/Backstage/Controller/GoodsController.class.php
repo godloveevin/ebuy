@@ -96,15 +96,6 @@ class GoodsController extends BaseController {
         }
     }
 
-    // 测试方法
-    function test(){}
-
-    // 商品类型
-    public function type(){}
-
-    // 商品品牌
-    public function brand(){}
-
     // 商品进入回收站，ajax回收
     public function goToTrash(){
         $good_id = I('get.good_id');
