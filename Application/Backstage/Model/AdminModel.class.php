@@ -48,7 +48,7 @@ class AdminModel extends BaseModel {
         $data['addtime'] = time();
 
         // 管理员名称不可重复
-        if($this->where("admin_name='".$data['admin_name']."'")->find()){
+        if($this->where("admin_name='".$data['admin_name']."' AND is_del=0")->find()){
             $this->error = '管理员名称不可重复！';
             return false;
         }
@@ -113,7 +113,7 @@ class AdminModel extends BaseModel {
     public function update($data=array()){
         // 超级管理员禁止编辑
         if(intval($data['admin_id']) == 1){
-            $this->error = '超级管理员角色禁止编辑！';
+            $this->error = '超级管理员禁止编辑！';
             return false;
         }
         // 处理更新时间
@@ -127,6 +127,11 @@ class AdminModel extends BaseModel {
         }else{
             $data['eb_salt'] = uniqid('EBUY');
             $data['password'] = md5($data['password'].md5($data['eb_salt']));
+        }
+        // 管理员的名字不能重复
+        if($this->where("is_del=0 AND admin_id!=".$data['admin_id']." AND admin_name='".$data['admin_name']."'")->find()){
+            $this->error = '管理员名不能重复！';
+            return false;
         }
         return $this->save($data);
     }

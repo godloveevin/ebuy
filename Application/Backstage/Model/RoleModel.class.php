@@ -60,22 +60,33 @@ class RoleModel extends BaseModel {
             $result['msg'] = '系统异常';
             return $result;
         }
-        // 删除
-        if($roleInfo['role_name'] === '超级管理员'){
+        // 超级管理员禁止删除
+        if(($roleInfo['role_name'] === '超级管理员') || $role_id <= 1){
             $result['status'] = 0;
             $result['msg'] = '超级管理员禁止删除';
             return $result;
-        }else {
-            $res = $this->where('role_id=' . $role_id)->setField('is_del', 1);
-            if ($res === false) {
-                $result['status'] = 0;
-                $result['msg'] = '删除角色失败';
-                return $result;
-            }
+        }
+        // 角色下有用户禁止删除
+        $res = D('Admin')->where('role_id='.$role_id.' AND is_del=0')->find();
+        if($res){
+            $result['status'] = 0;
+            $result['msg'] = '角色下存在有效用户，禁止删除';
+            return $result;
+        }
+        $res = $this->where('role_id=' . $role_id)->setField('is_del', 1);
+        if ($res === false) {
+            $result['status'] = 0;
+            $result['msg'] = '删除角色失败';
+            return $result;
         }
         return $result;
     }
 
+    /**
+     * @param $data
+     * @param $options
+     * @return bool|void
+     */
     public function _before_insert(&$data, $options)
     {
         // 处理录入时间
@@ -88,7 +99,7 @@ class RoleModel extends BaseModel {
         }
 
         // 角色名重复问题
-        $res = $this->where("role_name='".$data['role_name']."'")->find();
+        $res = $this->where("role_name='".$data['role_name']."' AND is_del=0")->find();
         if($res){
             $this->error = '角色名不能重复！';
             return false;
@@ -107,6 +118,11 @@ class RoleModel extends BaseModel {
         }
         if(intval($data['role_id']) == 1){
             $this->error = '超级管理员角色禁止编辑！';
+            return false;
+        }
+        // 角色名称不能重复
+        if($this->where("is_del=0 AND role_id!=".$data['role_id']." AND role_name='".$data['role_name']."'")->find()){
+            $this->error = '角色名称不能重复！';
             return false;
         }
         return $this->save($data);

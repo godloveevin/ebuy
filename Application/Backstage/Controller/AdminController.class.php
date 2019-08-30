@@ -41,8 +41,8 @@ class AdminController extends BaseController {
         }else{
             // 处理时间格式问题
             foreach($adminInfos['data'] as $k=>$v){
-                $adminInfos['data'][$k]['addtime'] = date('Y-m-d',$v['addtime']);
-                $adminInfos['data'][$k]['updatetime'] = date('Y-m-d',$v['updatetime']);
+                $adminInfos['data'][$k]['addtime'] = date('Y-m-d H:i:s',$v['addtime']);
+                $adminInfos['data'][$k]['updatetime'] = date('Y-m-d H:i:s',$v['updatetime']);
             }
         }
         $this->assign(array(
