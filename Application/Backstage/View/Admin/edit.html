@@ -1,0 +1,69 @@
+<extend name="Public:base" />
+<block name="main">
+    <h1>
+        <a href="{:U('index')}" class="btn btn-right btn-add-goods">管理员列表</a>
+        <span class="action-span1"><a href="{:U('Index/main')}">EBUY 管理中心</a> </span>
+        <span id="search_id" class="action-span1"> > 编辑管理员 </span>
+        <div style="clear:both"></div>
+    </h1>
+    <div class="tab-div">
+
+        <!-- tab body -->
+        <div id="tabbody-div">
+            <form enctype="multipart/form-data" action="" method="post" name="theForm">
+                <input type="hidden" name="admin_id" value="{$adminInfo.admin_id}">
+                <table width="90%" id="general-table" align="center" class="gk-table">
+                    <tr>
+                        <td class="label">用户名：</td>
+                        <td>
+                            <input type="text" name="admin_name" value="{$adminInfo.admin_name}" style="float:left;" size="20" />
+                            <span class="require-field">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">密码：</td>
+                        <td>
+                            <input type="password" name="password" value="{$adminInfo.password}" style="float:left;" size="20" />
+                            <span class="require-field">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">邮箱：</td>
+                        <td>
+                            <input type="text" name="email" value="{$adminInfo.email}" style="float:left;" size="20"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">所属角色：</td>
+                        <td>
+                            <select name="role_id">
+                                <option value="0">请选择...</option>
+                                <volist name="roleInfos" id="roleInfo">
+                                    <option value="{$roleInfo.role_id}" <eq name="roleInfo.role_id" value="$adminInfo.role_id">selected</eq> >{$roleInfo.role_name}</option>
+                                </volist>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">排序:</td>
+                        <td>
+                            <input type="text" name='sort_order'  value="{$adminInfo.sort_order}" size="15" />
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="button-div">
+                    <input type="submit" value=" 确定 " class="button" />
+                    <input type="reset" value=" 重置 " class="button" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</block>
+
+<block name="js">
+    <script>
+
+    </script>
+</block>

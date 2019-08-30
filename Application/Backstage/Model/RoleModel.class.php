@@ -105,6 +105,10 @@ class RoleModel extends BaseModel {
         }else{
             $data['access_ids'] = '';
         }
+        if(intval($data['role_id']) == 1){
+            $this->error = '超级管理员角色禁止编辑！';
+            return false;
+        }
         return $this->save($data);
     }
 

@@ -18,7 +18,7 @@ class BaseModel extends Model {
 
     // 获取总记录数
     private function _getTotal($where=''){
-        $res = $this->where($where)->count();
+        $res = $this->alias('a')->where($where)->count();
         return $res;
     }
 

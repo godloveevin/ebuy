@@ -1,0 +1,116 @@
+<extend name="Public:base" />
+<block name="main">
+<h1>
+    <a class="btn btn-right" href="{:U('Admin/add')}">添加管理员</a>
+    <span class="action-span1"><a href="{:U('Index/index')}">ECSHOP 管理中心</a> </span>
+    <span id="search_id" class="action-span1"> > 管理员列表 </span>
+    <div style="clear:both"></div>
+</h1>
+
+<div class="form-div">
+    <form action="" name="searchForm" method="post">
+        所属角色
+        <select name="role_id">
+            <option value="0">请选择...</option>
+            <volist name="roleInfos" id="roleInfo">
+                <option value="{$roleInfo.role_id}" <eq name="roleInfo.role_id" value="$Think.post.role_id">selected</eq> >{$roleInfo.role_name}</option>
+            </volist>
+        </select>
+        管理员名称
+        <input type="text" name="keyword" value="{$Think.post.keyword}"/>
+        <input type="submit" class="button" value=" 搜索 ">
+    </form>
+</div>
+
+<form method="POST" action="" name="listForm" onsubmit="return confirm_bath()">
+    <!-- start admin list -->
+    <div class="list-div" id="listDiv">
+        <!--用户列表部分-->
+        <table cellpadding="3" cellspacing="1">
+            <tr>
+                <th>
+                    编号<img src="__PUBLIC_BACKSTAGE__/images/sort_desc.png">
+                </th>
+                <th>管理员名称</th>
+                <th>所属角色</th>
+                <th>邮件地址</th>
+                <th>排序</th>
+                <th>注册日期</th>
+                <th>更新日期</th>
+                <th>操作</th>
+            </tr>
+
+            <neq name="adminInfos" value="0">
+                <volist name="adminInfos" id="adminInfo">
+                    <tr>
+                        <td>{$adminInfo.admin_id}</td>
+                        <td align="center">{$adminInfo.admin_name}</td>
+                        <td align="center">{$adminInfo.role_name}</td>
+                        <td align="center">{$adminInfo.email}</td>
+                        <td align="center">{$adminInfo.sort_order}</td>
+                        <td align="center">{$adminInfo.addtime}</td>
+                        <td align="center">{$adminInfo.updatetime}</td>
+                        <neq name="adminInfo.admin_id" value="1">
+                        <td align="center">
+                            <a href="{:U('edit','admin_id='.$adminInfo['admin_id'])}" title="编辑">
+                                <img src="__PUBLIC_BACKSTAGE__/images/icon_edit.gif" width="16" height="16" border="0"></a>
+                            <a href="javascript:" onclick="drop({$adminInfo.admin_id}, '您确定要删除吗？')" title="删除">
+                                <img src="__PUBLIC_BACKSTAGE__/images/icon_drop.gif" width="16" height="16" border="0"></a>
+                        </td>
+                        </neq>
+                    </tr>
+                </volist>
+            <else/>
+                <tr><td class="no-records" colspan="7">没有找到任何记录</td></tr>
+            </neq>
+        </table>
+            <!-- 分页 -->
+            <table id="page-table" cellspacing="0">
+                <tr>
+                    <td align="right" nowrap="true">
+                        <div id="turn-page">
+                            <span id="pageCurrent" style="color:#41a5e1;">{$pageInfo.curPage}</span> / <span id="totalPages" style="color:#41a5e1;">{$pageInfo.totalPages}</span>
+                            页，每页显示<span style="color:#41a5e1;">{$pageInfo.pageSize}</span>条记录，总共 <span id="totalRecords" style="color:#41a5e1;">{$pageInfo.total}</span>条记录
+                            <span id="page-link">
+                        <a href="{$pageInfo.firstPageUrl}">首页</a>
+                        <neq name="pageInfo.prevPageUrl" value="0"><a href="{$pageInfo.prevPageUrl}">上一页</a></neq>
+                        <neq name="pageInfo.nextPageUrl" value="0"><a href="{$pageInfo.nextPageUrl}">下一页</a></neq>
+                        <a href="{$pageInfo.lastPageUrl}">尾页</a>
+                      </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+    </div>
+</form>
+</block>
+
+<block name="js">
+    <script>
+        /**
+         * 删除管理员
+         * @param admin_id
+         * @param opt
+         */
+        var drop = function(admin_id,opt='确认'){
+            if(confirm(opt)) {
+                var url = '/Backstage/Admin/drop/admin_id/'+ admin_id;
+                $.get(url, function (data) {
+                    var load_div = parent.frames['header-frame'].document.getElementById('load-div');
+                    load_div.style.display = '';
+                    if(data.status == 1){
+                        load_div.style.color = '#2b9bde';
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                    }else{
+                        load_div.style.color = '#FF9900';
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                    }
+                    setTimeout(function () {
+                        load_div.style.display = 'none';
+                        if(data.status == 1) location.reload();
+                    },1000);
+                },'json');
+            }
+        }
+    </script>
+</block>
