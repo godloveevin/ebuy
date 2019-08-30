@@ -26,6 +26,7 @@ class IndexController extends BaseController {
     public function menu(){
         // 赋值菜单数据给视图模板
         $this->assign('menus',$this->admin['menus']);
+        $this->assign('adminInfo',$this->admin['baseInfo']);
         $this->display();
     }
     // 显示后台首页main
@@ -51,5 +52,13 @@ class IndexController extends BaseController {
     public function serverMarket(){}
 
     // 清楚缓存
-    public function clear_cache(){}
+    public function clear_cache(){
+        if(!$admin_id = intval(I('get.admin_id'))){
+            $this->error('系统出错');
+        }
+
+        // 删除缓存文件
+        if(S('admin_'.$admin_id,null))
+            $this->success('缓存更新成功',U('index'));
+    }
 }
