@@ -16,6 +16,11 @@ use Think\Controller;
  * @package Backstage\Controller
  */
 class BaseController extends Controller {
+    // 声明存放管理员的权限，菜单的受保护的属性
+    protected $admin = array();
+
+    // 是否需要认证，超级管理员无须认证，其他管理员则需要认证
+    protected $is_need_certificated = true;
 
     // 构造方法
     public function __construct() {
@@ -25,6 +30,47 @@ class BaseController extends Controller {
         $adminInfo = session('adminInfo');
         if(!$adminInfo){
             $this->error('请先登录!',U('Login/login'));
+        }
+
+        // 存储管理员的基本信息
+        $this->admin['baseInfo'] = $adminInfo;
+
+        // 权限认证
+        // 1.获取权限集
+        if($this->admin['baseInfo']['role_id'] == 1){
+            // 超级管理员角色
+            $this->is_need_certificated = false;
+            $accesses = M('Access')->select();
+        }else{
+            // 普通角色
+            $roleInfo = M('Role')->field('access_ids')->where('role_id='.$this->admin['baseInfo']['role_id'])->find();
+            $access_ids = explode(',',$roleInfo['access_ids']);
+            $accesses = M('Access')->where(array('access_id'=>array('in',$access_ids)))->select();
+        }
+        // 2.组装权限集以及组装菜单集
+        foreach($accesses as $k=>$v){
+            $this->admin['access'][] = strtolower($v['access_string']);
+            // 考虑到菜单是否导航显示is_show 1显示 0不显示
+            if($v['is_show'] == 1){
+                $this->admin['menus'][] = $v;
+            }
+        }
+        // 3.完成认证工作
+        if($this->is_need_certificated){
+            // 给普通角色设置默认访问权限和默认菜单
+            $this->admin['access'][] = 'backstage/index/index';
+            $this->admin['access'][] = 'backstage/index/top';
+            $this->admin['access'][] = 'backstage/index/menu';
+            $this->admin['access'][] = 'backstage/index/main';
+
+            $action_string = strtolower(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME);
+            if(!in_array($action_string,$this->admin['access'])){
+                if(IS_AJAX){
+                    $this->ajaxReturn(array('status'=>0,'msg'=>'小伙计，么有权限咧'));
+                }else{
+                    echo '小伙计，么有权限咧';die;
+                }
+            }
         }
     }
 

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="__PUBLIC_BACKSTAGE__/styles/general.css" rel="stylesheet" type="text/css"/>
+    <link href="__PUBLIC_BACKSTAGE__/styles/nav.css" rel="stylesheet" type="text/css"/>
+</head>
+<body class="nav">
+<div class="menu">
+    <div id="logo-div">
+        <a href="{:U('Index/index')}"><img width="87" class="logo" src="__PUBLIC_BACKSTAGE__/images/ecshop_logo@2x.png" /></a>
+        <a href="#" class="noauthorize"><img src="__PUBLIC_BACKSTAGE__/images/authorizegk.png" class="icon" width="12">授权用户</a>
+    </div>
+    <div id="main-div">
+        <div id="menu-list">
+            <ul class="menu" id="menu-ul">
+
+                <li class="icon-goods" data-url="{:U('Goods/index')}" data-key="good-sindex" onclick="showsub(this)">
+                    商品管理
+                    <div class="submenu">
+                        <div class="title">商品管理</div>
+                        <ul>
+                            <li id="good-sindex" class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/index')}" target="main-frame">商品列表</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/add')}" target="main-frame">添加新商品</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Category/index')}" target="main-frame">商品分类</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('comment/index')}" target="main-frame">用户评论</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/brand')}" target="main-frame">商品品牌</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/type')}" target="main-frame">商品类型</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/trashList')}" target="main-frame">商品回收站</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="icon-priv" data-url="{:U('Access/index')}" data-key="access-index" onclick="showsub(this)">
+                    权限管理
+                    <div class="submenu">
+                        <div class="title">权限管理</div>
+                        <ul>
+                            <li class="menu-item" id="access-index" onclick="showact(this, event)"><a href="{:U('Access/index')}" target="main-frame">权限列表</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Access/add')}" target="main-frame">添加权限</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Admin/index')}" target="main-frame">管理员列表</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Admin/add')}" target="main-frame">添加管理员</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Role/index')}" target="main-frame">角色管理</a></li>
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Role/add')}" target="main-frame">添加角色</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!--{foreach from=$menus item=menu key=k}
+                {if $menu.action}
+                <li><a href="{$menu.action}" target="main-frame">{$menu.label}</a></li>
+                {else}
+                <li key="{$k}" class="icon-{$menu.icon}" data-url="{$menu.url}" data-key="{$menu.key}" name="menu" onclick="showsub(this)">
+                    {$menu.label}
+                    {if $menu.children}
+                    <div class="submenu">
+                        <div class="title">{$menu.label}</div>
+                        <ul>
+                            {foreach from=$menu.children key=key item=child}
+                            <li id="sub-menu-{$key}" class="menu-item" onclick="showact(this, event)"><a href="{$child.action}" target="main-frame">{$child.label}</a></li>
+                            {/foreach}
+                        </ul>
+                    </div>
+                    {/if}
+                </li>
+                {/if}
+                {/foreach}-->
+            </ul>
+        </div>
+    </div>
+    <div id="foot-div" onmouseover="showBar(this)" onmouseout="hideBar(this)">
+        <a href="#">{$Think.session.adminInfo.admin_name}</a>
+        <div class="panel-hint">
+            <ul>
+                <li>
+                    <a href="{:U('clear_cache')}" target="main-frame" class="fix-submenu">清除缓存</a>
+                </li>
+                <li class="btn-exit">
+                    <a href="{:U('Login/logout')}" target="_top" class="fix-submenu">退出</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script language="JavaScript">
+    function showBar(item){
+        var silb = item.lastElementChild;
+        silb.style.display = "block";
+    }
+    function hideBar(item){
+        var silb = item.lastElementChild;
+        silb.style.display = "none";
+    }
+    function showsub(el) {
+        var act = el.parentNode.getElementsByClassName('active');
+        var url = el.getAttribute('data-url') || '';
+        var key = el.getAttribute('data-key') || '';
+
+        if (act.length) {
+            Array.prototype.slice.call(act).forEach(function(el) {
+                el.className = el.className.replace(/\sactive\b/i, '');
+            });
+        }
+        el.className = el.className + ' active';
+        top.document.getElementById('frame-body').cols = '240,*';
+        if (url) {
+            top.document.getElementById('main-frame').src=url;
+            document.getElementById(key).className = 'menu-item active';
+        }
+    }
+    function showact(el, e) {
+        e.stopPropagation();
+        var act = el.parentNode.getElementsByClassName('active');
+        if (act.length) {
+            Array.prototype.slice.call(act).forEach(function(el) {
+                el.className = el.className.replace(/\sactive\b/i, '');
+            });
+        }
+        el.className = el.className + ' active';
+    }
+</script>
+
+</body>
+</html>

@@ -24,6 +24,8 @@ class IndexController extends BaseController {
     }
     // 显示后台首页menu
     public function menu(){
+        // 赋值菜单数据给视图模板
+        $this->assign('menus',$this->admin['menus']);
         $this->display();
     }
     // 显示后台首页main

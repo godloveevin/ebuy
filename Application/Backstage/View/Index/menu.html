@@ -3,70 +3,35 @@
 <head>
     <title>Menu</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link href="__PUBLIC_BACKSTAGE__/styles/general.css" rel="stylesheet" type="text/css" />
-    <link href="__PUBLIC_BACKSTAGE__/styles/nav.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC_BACKSTAGE__/styles/general.css" rel="stylesheet" type="text/css"/>
+    <link href="__PUBLIC_BACKSTAGE__/styles/nav.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class="nav">
 <div class="menu">
     <div id="logo-div">
-        <a href="{:U('Index/index')}"><img width="87" class="logo" src="__PUBLIC_BACKSTAGE__/images/ecshop_logo@2x.png" alt="ECSHOP - power for e-commerce" /></a>
-        <a href="javascript:" class="noauthorize"><img src="__PUBLIC_BACKSTAGE__/images/authorizegk.png" class="icon" width="12"> 授权用户</a>
+        <a href="{:U('Index/index')}"><img width="87" class="logo" src="__PUBLIC_BACKSTAGE__/images/ecshop_logo@2x.png" /></a>
+        <a href="#" class="noauthorize"><img src="__PUBLIC_BACKSTAGE__/images/authorizegk.png" class="icon" width="12">授权用户</a>
     </div>
-    <div id="license-div"></div>
     <div id="main-div">
         <div id="menu-list">
             <ul class="menu" id="menu-ul">
-
-                <li class="icon-goods" data-url="{:U('Goods/index')}" data-key="good-sindex" onclick="showsub(this)">
-                    商品管理
+                <volist name="menus" id="vo">
+                <eq name="vo.parent_id" value="0">
+                <li class="icon-content" data-url="{:U($vo['access_mode'].'/'.$vo['access_controller'].'/'.$vo['access_action'])}" data-key="good-index" onclick="showsub(this)">
+                    {$vo.access_name}
                     <div class="submenu">
-                        <div class="title">商品管理</div>
+                        <div class="title">{$vo.access_name}</div>
                         <ul>
-                            <li id="good-sindex" class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/index')}" target="main-frame">商品列表</a></li>
-                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/add')}" target="main-frame">添加新商品</a></li>
-                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Category/index')}" target="main-frame">商品分类</a></li>
-                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('comment/index')}" target="main-frame">用户评论</a></li>
-                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/brand')}" target="main-frame">商品品牌</a></li>
-                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/type')}" target="main-frame">商品类型</a></li>
-                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('goods/trashList')}" target="main-frame">商品回收站</a></li>
+                            <volist name="menus" id="v">
+                                <eq name="v.parent_id" value="$vo.access_id">
+                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U($v['access_mode'].'/'.$v['access_controller'].'/'.$v['access_action'])}" target="main-frame">{$v.access_name}</a></li>
+                                </eq>
+                            </volist>
                         </ul>
                     </div>
                 </li>
-
-                <li class="icon-priv" data-url="{:U('Access/index')}" data-key="access-index" onclick="showsub(this)">
-                    权限管理
-                    <div class="submenu">
-                        <div class="title">权限管理</div>
-                        <ul>
-                            <li class="menu-item" id="access-index" onclick="showact(this, event)"><a href="{:U('Access/index')}" target="main-frame">权限列表</a></li>
-                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Access/add')}" target="main-frame">添加权限</a></li>
-                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Admin/index')}" target="main-frame">管理员列表</a></li>
-                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Admin/add')}" target="main-frame">添加管理员</a></li>
-                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Role/index')}" target="main-frame">角色管理</a></li>
-                            <li class="menu-item" onclick="showact(this, event)"><a href="{:U('Role/add')}" target="main-frame">添加角色</a></li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!--{foreach from=$menus item=menu key=k}
-                {if $menu.action}
-                <li><a href="{$menu.action}" target="main-frame">{$menu.label}</a></li>
-                {else}
-                <li key="{$k}" class="icon-{$menu.icon}" data-url="{$menu.url}" data-key="{$menu.key}" name="menu" onclick="showsub(this)">
-                    {$menu.label}
-                    {if $menu.children}
-                    <div class="submenu">
-                        <div class="title">{$menu.label}</div>
-                        <ul>
-                            {foreach from=$menu.children key=key item=child}
-                            <li id="sub-menu-{$key}" class="menu-item" onclick="showact(this, event)"><a href="{$child.action}" target="main-frame">{$child.label}</a></li>
-                            {/foreach}
-                        </ul>
-                    </div>
-                    {/if}
-                </li>
-                {/if}
-                {/foreach}-->
+                </eq>
+                </volist>
             </ul>
         </div>
     </div>
