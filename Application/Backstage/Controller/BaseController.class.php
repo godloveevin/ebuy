@@ -21,7 +21,11 @@ class BaseController extends Controller {
     public function __construct() {
         parent::__construct();
 
-
+        // 判断用户是否登录
+        $adminInfo = session('adminInfo');
+        if(!$adminInfo){
+            $this->error('请先登录!',U('Login/login'));
+        }
     }
 
     /**

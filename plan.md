@@ -113,6 +113,32 @@ CREATE TABLE `eb_access` (
 ) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='权限表';
 
 
+###后台登录模块，退出，防止翻墙操作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

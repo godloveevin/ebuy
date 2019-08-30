@@ -24,6 +24,7 @@ class AdminModel extends BaseModel {
     protected $fields = array(
         'admin_id','admin_name','email','password','eb_salt','last_login_time',
         'last_login_ip','role_id','addtime','updatetime','is_del','sort_order',
+        'login_times',
     );
     // 自动验证
     protected $_validate = array(

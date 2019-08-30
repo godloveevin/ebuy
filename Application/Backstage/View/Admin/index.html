@@ -38,6 +38,9 @@
                 <th>排序</th>
                 <th>注册日期</th>
                 <th>更新日期</th>
+                <th>最后登录IP</th>
+                <th>最后登录时间</th>
+                <th>登录次数</th>
                 <th>操作</th>
             </tr>
 
@@ -52,6 +55,9 @@
                         <td align="center">{$adminInfo.sort_order}</td>
                         <td align="center">{$adminInfo.addtime}</td>
                         <td align="center">{$adminInfo.updatetime}</td>
+                        <td align="center">{$adminInfo.last_login_time}</td>
+                        <td align="center">{$adminInfo.last_login_ip}</td>
+                        <td align="center">{$adminInfo.login_times}</td>
                         <neq name="adminInfo.admin_id" value="1">
                         <td align="center">
                             <a href="{:U('edit','admin_id='.$adminInfo['admin_id'])}" title="编辑">

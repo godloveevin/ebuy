@@ -71,14 +71,14 @@
         </div>
     </div>
     <div id="foot-div" onmouseover="showBar(this)" onmouseout="hideBar(this)">
-        <a href="#">admin</a>
+        <a href="#">{$Think.session.adminInfo.admin_name}</a>
         <div class="panel-hint">
             <ul>
                 <li>
                     <a href="{:U('clear_cache')}" target="main-frame" class="fix-submenu">清除缓存</a>
                 </li>
                 <li class="btn-exit">
-                    <a href="{:U('login/logout')}" target="_top" class="fix-submenu">退出</a>
+                    <a href="{:U('Login/logout')}" target="_top" class="fix-submenu">退出</a>
                 </li>
             </ul>
         </div>
