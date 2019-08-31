@@ -59,6 +59,6 @@ class IndexController extends BaseController {
 
         // 删除缓存文件
         if(S('admin_'.$admin_id,null))
-            $this->success('缓存更新成功',U('index'));
+            $this->success('ok',U('index'));
     }
 }
