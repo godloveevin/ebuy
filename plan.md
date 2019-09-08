@@ -117,6 +117,17 @@ CREATE TABLE `eb_access` (
 
 ###权限认证功能
 
+###商品类型表
+CREATE TABLE `eb_type` (
+  `type_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '类型ID标识',
+  `type_name` varchar(255) NOT NULL DEFAULT '' COMMENT '类型名称',
+  `type_describe` text NOT NULL COMMENT '类型描述',
+  `addtime` int(11) NOT NULL DEFAULT '0' COMMENT '记录添加时间',
+  `updatetime` int(11) NOT NULL DEFAULT '0' COMMENT '记录更新时间',
+  `is_del` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除，1是，0否，默认0',
+  PRIMARY KEY (`type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='类型数据表';
+
 
 
 

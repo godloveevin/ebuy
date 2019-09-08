@@ -1,0 +1,84 @@
+<extend name="Public:base" />
+<block name="main">
+    <h1>
+        <a href="{:U('add')}" class="btn btn-right btn-add-goods">添加类型</a>
+        <span class="action-span1"><a href="{:U('Index/main')}">EBUY 管理中心</a> </span>
+        <span id="search_id" class="action-span1"> > 类型管理 </span>
+        <div style="clear:both"></div>
+    </h1>
+
+<div class="list-div" id="listDiv">
+    <table cellspacing='1' cellpadding='3' id='list-table'>
+        <tr>
+            <th>编号</th>
+            <th>角色名</th>
+            <th>角色描述</th>
+            <th>录入时间</th>
+            <th>最后更新时间</th>
+            <th>操作</th>
+        </tr>
+        <neq name="infos" value="0">
+        <volist name="infos" id="info">
+        <tr>
+            <td>{$info.type_id}</td>
+            <td>{$info.type_name}</td>
+            <td>{$info.type_describe}</td>
+            <td>{$info.addtime}</td>
+            <td>{$info.updatetime}</td>
+            <td align="center">
+                <a href="{:U('edit','type_id='.$info['type_id'])}" title="编辑">
+                    <img src="__PUBLIC_BACKSTAGE__/images/icon_edit.gif" width="16" height="16" border="0"></a>
+                <a href="javascript:" onclick="drop({$info.type_id}, '您确定要删除吗？')" title="删除">
+                    <img src="__PUBLIC_BACKSTAGE__/images/icon_drop.gif" width="16" height="16" border="0"></a>
+            </td>
+        </tr>
+        </volist>
+        <else/>
+            <tr><td class="no-records" colspan="6">没有找到任何记录</td></tr>
+        </neq>
+    </table>
+
+    <!-- 分页 -->
+    <table id="page-table" cellspacing="0">
+        <tr>
+            <td align="right" nowrap="true">
+                <div id="turn-page">
+                    <span id="pageCurrent" style="color:#41a5e1;">{$pageInfo.curPage}</span> / <span id="totalPages" style="color:#41a5e1;">{$pageInfo.totalPages}</span>
+                    页，每页显示<span style="color:#41a5e1;">{$pageInfo.pageSize}</span>条记录，总共 <span id="totalRecords" style="color:#41a5e1;">{$pageInfo.total}</span>条记录
+                    <span id="page-link">
+                        <a href="{$pageInfo.firstPageUrl}">首页</a>
+                        <neq name="pageInfo.prevPageUrl" value="0"><a href="{$pageInfo.prevPageUrl}">上一页</a></neq>
+                        <neq name="pageInfo.nextPageUrl" value="0"><a href="{$pageInfo.nextPageUrl}">下一页</a></neq>
+                        <a href="{$pageInfo.lastPageUrl}">尾页</a>
+                      </span>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+</block>
+<block name="js">
+<script>
+    var drop = function(type_id,opt='确认'){
+        if(confirm(opt)) {
+            var url = '/Backstage/Type/drop/type_id/' + type_id;
+            $.get(url, function (data) {
+                var load_div = parent.frames['header-frame'].document.getElementById('load-div');
+                load_div.style.display = '';
+                if(data.status == 1){
+                    load_div.style.color = '#2b9bde';
+                    load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                }else{
+                    load_div.style.color = '#FF9900';
+                    load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                }
+                setTimeout(function () {
+                    load_div.style.display = 'none';
+                    if(data.status == 1) location.reload();
+                },1000);
+            },'json');
+        }
+    }
+</script>
+</block>
