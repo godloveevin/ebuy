@@ -128,6 +128,20 @@ CREATE TABLE `eb_type` (
   PRIMARY KEY (`type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='类型数据表';
 
+###商品属性表
+CREATE TABLE `eb_attribute` (
+  `attr_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '属性ID标识',
+  `attr_name` varchar(255) NOT NULL DEFAULT '' COMMENT '属性名称',
+  `attr_describe` text NOT NULL COMMENT '属性描述',
+  `type_id` int(11) NOT NULL DEFAULT 0 COMMENT '类型ID标识',
+  `attr_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '属性的类型，1表示唯一属性，2表示单选属性',
+  `attr_input_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '属性的录入方式，1表示手工输入，2表示列表选择',
+  `attr_values` varchar(255) NOT NULL DEFAULT '' COMMENT '列表选择默认值，多个值之间用逗号隔开',
+  `addtime` int(11) NOT NULL DEFAULT '0' COMMENT '记录添加时间',
+  `updatetime` int(11) NOT NULL DEFAULT '0' COMMENT '记录更新时间',
+  `is_del` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除，1是，0否，默认0',
+  PRIMARY KEY (`attr_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品属性表';
 
 
 

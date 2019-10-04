@@ -1,0 +1,121 @@
+<extend name="Public:base" />
+<block name="main">
+<h1>
+    <a class="btn btn-right" href="{:U('Category/add')}">添加分类</a>
+    <span class="action-span1"><a href="{:U('Index/main')}">EBUY后台管理中心</a> </span>
+    <span id="search_id" class="action-span1">  >   商品分类 </span>
+    <div style="clear:both"></div>
+</h1>
+<form method="post" action="" name="listForm">
+    <!-- start ad position list -->
+    <div class="list-div" id="listDiv">
+        <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+            <tr>
+                <th>编号</th>
+                <th>分类名称</th>
+                <th>商品数量</th>
+                <th>数量单位</th>
+                <th>导航栏</th>
+                <th>是否显示</th>
+                <th>是否推荐</th>
+                <th>排序</th>
+                <th>操作</th>
+            </tr>
+            <foreach name="cat_Info" item="cat">
+            <tr align="center" class="{$cat.level}" id="{$cat.level}_{$cat.cat_id}">
+                <td width="5%">{$cat.cat_id}</td>
+                <td align="left" class="first-cell" >
+                    <if condition="$cat.is_leaf neq 1">
+                    <img src="__PUBLIC_BACKSTAGE__/images/menu_minus.gif" id="icon_{$cat.level}_{$cat.cat_id}" width="9" height="9" border="0" style="margin-left:{$cat.step}em;background-color:#000080;color:#000080;" onclick="rowClicked(this)" />
+                    </if>
+                        <if condition="$cat.is_leaf eq 1">
+                    <img src="__PUBLIC_BACKSTAGE__/images/menu_minus.gif" width="9" height="9" border="0" style="margin-left:{$cat.step}em" />
+                    </if>
+                    <span><a href="goods.php?act=list&cat_id={$cat.cat_id}">{$cat.cat_name}</a></span>
+                    <if condition="$cat.cat_image neq ''">
+                    <img src="__PUBLIC_BACKSTAGE__/{$cat.cat_image}" border="0" style="vertical-align:middle;" width="60px" height="21px">
+                    </if>
+                </td>
+                <td width="10%">{$cat.sort_order}</td>
+                <td width="10%">
+                    <span onclick="listTable.edit(this, 'edit_measure_unit', {$cat.cat_id})">
+                        <if condition="$cat.measure_unit">{$cat.measure_unit}<else>&nbsp;&nbsp;&nbsp;&nbsp;</if>
+                    </span>
+                </td>
+                <td width="10%">
+                    <if condition="($cat.show_in_nav eq 1)" >
+                    <img src="__PUBLIC_BACKSTAGE__/images/yes.svg"width="20"/>
+                    </if>
+                    <if condition="($cat.show_in_nav neq 1)">
+                    <img src="__PUBLIC_BACKSTAGE__/images/no.svg"width="20"/>
+                    </if>
+                </td>
+                <td width="10%">
+                    <if condition="($cat.is_show eq 1)" >
+                    <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20"/>
+                     </if>
+                    <if condition="($cat.is_show neq 1)">
+                     <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20"/>
+                     </if>
+                </td>
+                <td width="10%">
+                    <if condition="($cat.is_rec eq 1)" >
+                        <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20"/>
+                    </if>
+                    <if condition="($cat.is_rec neq 1)">
+                        <img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="20"/>
+                    </if>
+                </td>
+                <td width="10%" align="right"><span>{$cat.sort_order}</span></td>
+                <td width="8%" align="center">
+                    <a href="{:U('edit','cat_id='.$cat['cat_id'])}">
+                        <img src="__PUBLIC_BACKSTAGE__/images/icon_edit.gif" width="16" height="16" border="0"></a>
+                    <a href="javascript:" onclick="dels({$cat.cat_id}, '确认删除')" title="删除">
+                        <img src="__PUBLIC_BACKSTAGE__/images/icon_drop.gif" width="16" height="16" border="0"></a>
+                </td>
+            </tr>
+            </foreach>
+        </table>
+    </div>
+</form>
+
+</block>
+<block name="js">
+    <script>
+
+        /**
+         * 删除分类
+         * @param cat_id
+         * @param opt
+         */
+        var dels = function(cat_id,opt='确认删除'){
+            if(confirm(opt)) {
+                var url = '/Backstage/Category/dels/cat_id/'+cat_id;
+                $.get(url, function (data) {
+                    var load_div = parent.frames['header-frame'].document.getElementById('load-div');
+                    load_div.style.display = '';
+                    if(data.status == 1){
+                        load_div.style.color = '#2b9bde';
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/yes.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                    }else{
+                        load_div.style.color = '#FF9900';
+                        load_div.innerHTML ='<img src="__PUBLIC_BACKSTAGE__/images/no.svg" width="16" height="16" style="vertical-align: middle"/>' + data.msg;
+                    }
+                    setTimeout(function () {
+                        load_div.style.display = 'none';
+                        if(data.status == 1) location.reload();
+                    },1000);
+                },'json');
+            }
+        }
+
+        /**
+         * 折叠效果
+         */
+
+        /**
+         * 展开效果
+         */
+
+    </script>
+</block>

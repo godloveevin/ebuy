@@ -1,0 +1,81 @@
+<extend name="Public:base" />
+<block name="main">
+<h1>
+    <a class="btn btn-right" href="{:U('Attribute/index')}">属性管理</a>
+    <span class="action-span1"><a href="{:U('Index/main')}">EBUY 管理中心</a>
+    </span><span id="search_id" class="action-span1"> > 添加属性 </span>
+    <div style="clear:both"></div>
+</h1>
+    <!-- start add new Attribute form -->
+<div class="main-div">
+    <form action="" method="post" name="theForm" enctype="multipart/form-data">
+        <table width="100%" id="general-table">
+            <tr>
+                <td class="label">属性名称:</td>
+                <td>
+                    <input type='text' name='attr_name' maxlength="20" value='' size='20' /> <font color="red">*</font>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">所属类型:</td>
+                <td>
+                    <select name="type_id" style="width: 165px;">
+                        <option value="0">选择属性类型</option>
+                        <volist name="typeInfos" id="vo">
+                            <option value="{$vo.type_id}">{$vo.type_name}</option>
+                        </volist>
+                    </select> <font color="red">*</font>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">属性类别:</td>
+                <td>
+                    <input type="radio" name="attr_type" value="1"  checked/> 唯一
+                    <input type="radio" name="attr_type" value="2"  /> 单选
+                </td>
+            </tr>
+            <tr>
+                <td class="label">录入方式:</td>
+                <td>
+                    <input type="radio" name="attr_input_type" value="1" checked /> 手工输入
+                    <input type="radio" name="attr_input_type" value="2" /> 列表选择
+                </td>
+            </tr>
+            <tr style="display:none;" id="attr-values">
+                <td class="label">列表选择默认值:</td>
+                <td>
+                    <textarea name='attr_values' rows="6" cols="51"></textarea>
+                    <p>(属性的默认值，当为属性录入方式选择列表选择的，必须填写，多个值用英文的逗号隔开)</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">属性描述:</td>
+                <td>
+                    <textarea name='attr_describe' rows="6" cols="51"></textarea>
+                </td>
+            </tr>
+        </table>
+        <div class="button-div">
+            <input type="submit" class="btn" value=" 确定 " />
+            <input type="reset" class="btn" value=" 重置 " />
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC_BACKSTAGE__/js/validator.js"></script>
+<script language="JavaScript">
+    // 聚焦分类名称输入框
+    document.forms['theForm'].elements['attr_name'].focus();
+
+    /**
+     * 列表选择方式录入显示录入值的接收框
+     */
+    $('input[name="attr_input_type"]').change(function () {
+        var val = $(this).val();
+        if(val == 1){
+            $('#attr-values').css('display','none');
+        }else{
+            $('#attr-values').css('display','');
+        }
+    });
+</script>
+</block>
